@@ -15,7 +15,7 @@ Kubernetes Version: v1.24.3-k3s1
 > - [ArgoCD][argocd-url] as the main GitOps tool | **Available at [argocd.k8s.localhost][argocd-localhost]**
 > - Access to the cluster using [Nginx Ingress][nginx-url].
 > - Secret Management with [Hashicorp's Vault][vault-url] | **Available at [vault.k8s.localhost][vault-localhost]**
->   - Secret access integration between Vault, Kubernetes and ArgoCD using [argocd-vault-plugin][vault-plugin-url]
+>   - Secret access integration between Vault and ArgoCD using [argocd-vault-plugin][vault-plugin-url]
 > - On-demand databases clusters with [Zalando Operator for PostgreSQL][postgres-url] | **UI available at [dbs.k8s.localhost][dbs-localhost]**
 > - Hot-Reload secrets and configmaps to pods using [Reloader][reloader-url].
 > - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
