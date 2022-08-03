@@ -97,7 +97,7 @@ task
 [task-installation-url]: https://taskfile.dev/installation/
 [mkcert-url]: https://github.com/FiloSottile/mkcert
 [kubectl-url]: https://kubernetes.io/docs/tasks/tools/
-[jq-url]: hhttps://stedolan.github.io/jq/download/
+[jq-url]: https://stedolan.github.io/jq/download/
 [k3d-url]: https://k3d.io
 [docker-url]: https://www.docker.com/products/docker-desktop/
 [rancher-url]: https://rancherdesktop.io/
