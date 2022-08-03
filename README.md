@@ -1,4 +1,4 @@
-# Bootstrapping cluster
+# Local Gitops
 
 ### Project Objective
 
@@ -27,7 +27,7 @@ Kubernetes Version: v1.24.3-k3s1
 ### Tools required locally
 
 > - [k3d][k3d-url] running atop of either (pick one):
->   - [Rancher Desktop **(Recommended)**][rancher-url] 
+>   - [Rancher Desktop **(Recommended)**][rancher-url]
 >   - [Docker for Desktop][docker-url]
 >   - [Podman][podman-url] (works but [requires extra steps][podman-steps])
 > - [Task][task-url] as a more modern iteration of the Makefile utility
