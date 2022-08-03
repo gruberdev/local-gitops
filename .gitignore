@@ -6,6 +6,7 @@ config/tls/*.pem
 *-secret.yaml
 apps/argocd/overlay/*.json
 j*.pem
+.DS_Store
 
 # .tfstate files
 *.tfstate
