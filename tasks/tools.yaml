@@ -1,0 +1,104 @@
+version: '3'
+vars:
+  CYAN: tput setaf 6
+  RED: tput setaf 1
+  YELLOW: tput setaf 3
+  GREEN: tput setaf 2
+  BLUE: tput setaf 1
+  PURPLE: tput setaf 5
+  BG_B: tput setab 0
+  BOLD: tput bold
+  RESET: tput sgr0
+  CLEAR: tput reset
+
+silent: true
+env:
+  VAULT_ADDR: "https://vault.k8s.localhost"
+  VAULT_SKIP_VERIFY: "true"
+  HOSTCTL: 1.1.2
+
+tasks:
+  clear:
+    cmds:
+      - sleep 0.1 && {{.CLEAR}}
+  highlight_bg:
+    cmds:
+      - |
+        sleep 0.1 && \
+        {{.CYAN}} && \
+        {{.BOLD}} && \
+        {{.BG_B}}
+  highlight_normal:
+    cmds:
+      - |
+        sleep 0.1 && \
+        {{.CYAN}} && \
+        {{.BOLD}}
+  reset:
+    cmds:
+      - |
+        sleep 0.1 && \
+        {{.RESET}}
+
+  install:
+    cmds:
+      - task: mkcert
+      - task: kustomize
+      - task: k3d
+      - task: kubectl
+      - task: jq
+      - task: vault
+
+  mkcert:
+    cmds:
+      - |
+        echo -e "Installing mkcert" && \
+        {{if eq OS "windows"}}choco install mkcert{{end}} \
+        {{if eq OS "darwin"}}brew install mkcert && brew install nss{{end}} \
+        {{if eq OS "linux"}}brew install mkcert{{end}}
+    ignore_error: true
+
+  kustomize:
+    cmds:
+      - |
+        echo -e "Installing kustomize" && \
+        {{if eq OS "windows"}}choco install kustomize \
+        {{else}}brew install kustomize{{end}}
+
+  k3d:
+    cmds:
+      - |
+        echo -e "Installing k3d" && \
+        {{if eq OS "windows"}}choco install k3d \
+        {{else}}brew install k3d{{end}}
+
+  kubectl:
+    cmds:
+      - |
+        echo -e "Installing kubectl" && \
+        {{if eq OS "windows"}}choco install kubernetes-cli \
+        {{else}}brew install kubernetes-cli{{end}}
+
+  jq:
+    cmds:
+      - |
+        echo -e "Installing jq" && \
+        {{if eq OS "windows"}}choco install jq\
+        {{else}}brew install jq{{end}}
+
+  hostctl:
+    cmds:
+      - |
+        echo -e "Installing hostctl" && \
+        {{if eq OS "windows"}}choco install wget && \
+        cd utilities && \
+        wget https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_windows_64-bit.zip && \
+        unzip hostctl_${HOSTCTL}_windows_64-bit.zip && \
+        rm hostctl_${HOSTCTL}_windows_64-bit.zip LICENSE README.md{{end}}
+
+  vault:
+    cmds:
+      - |
+        echo -e "Installing Vault CLI" && \
+        {{if eq OS "windows"}}choco install vault \
+        {{else}}brew tap hashicorp/tap && brew install hashicorp/tap/vault{{end}}
