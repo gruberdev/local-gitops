@@ -5,7 +5,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: Services Project
+  description: Applications Example Project
   sourceRepos:
   - '*'
   destinations:
@@ -18,6 +18,8 @@ spec:
   - namespace: databases
     server: https://kubernetes.default.svc
   - namespace: vault
+    server: https://kubernetes.default.svc
+  - namespace: example
     server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: '*'
