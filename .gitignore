@@ -38,6 +38,10 @@ terraform/*.terraform
 *.out
 .env
 nohup.out
+postgres/*
+!postgres/.gitkeep
+utilities/*
+!utilities/.gitkeep
 test/*
 test
 *.pem
