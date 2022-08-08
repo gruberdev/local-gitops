@@ -28,12 +28,18 @@ registries:
         endpoint:
           - http://registry.local.gd:5002
 
-# Uncomment for local storage on host machine through volume bindings
+# Uncomment for local storage on host machine w/ custom volume bindings
 #volumes:
 #  - volume: /my/host/path:/path/in/node # same as `--volume '/my/host/path:/path/in/node@server:0;agent:*'`
 #    nodeFilters:
 #      - server:0
 #      - agent:*
+
+volumes:
+  - volume: "${PWD}/storage:/var/lib/rancher/k3s/storage@all"
+    nodeFilters:
+      - server:0
+      - agent:*
 
 hostAliases:
   - ip: 127.0.0.1
