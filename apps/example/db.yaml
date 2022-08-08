@@ -1,0 +1,80 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: acid-test-cluster
+spec:
+  dockerImage: registry.opensource.zalan.do/acid/spilo-14:2.1-p6
+  teamId: "acid"
+  numberOfInstances: 2
+  users:  # Application/Robot users
+    zalando:
+    - superuser
+    - createdb
+    foo_user: []
+  enableMasterLoadBalancer: false
+  enableReplicaLoadBalancer: false
+  enableConnectionPooler: false # enable/disable connection pooler deployment
+  enableReplicaConnectionPooler: false # set to enable connectionPooler for replica service
+  allowedSourceRanges:  # load balancers' source ranges for both master and replica services
+  - 127.0.0.1/32
+  databases:
+    foo: zalando
+  preparedDatabases:
+    bar:
+      defaultUsers: true
+      extensions:
+        pg_partman: public
+        pgcrypto: public
+      schemas:
+        data: {}
+        history:
+          defaultRoles: true
+          defaultUsers: false
+  postgresql:
+    version: "14"
+    parameters:  # Expert section
+      shared_buffers: "32MB"
+      max_connections: "10"
+      log_statement: "all"
+  volume:
+    size: 1Gi
+  additionalVolumes:
+    - name: empty
+      mountPath: /opt/empty
+      targetContainers:
+        - all
+      volumeSource:
+        emptyDir: {}
+    - name: data
+      mountPath: /home/postgres/pgdata/partitions
+      targetContainers:
+        - postgres
+      volumeSource:
+        persistentVolumeClaim:
+          claimName: local-path-pvc
+          readyOnly: false
+  enableShmVolume: true
+  resources:
+    requests:
+      cpu: 10m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
+  patroni:
+    initdb:
+      encoding: "UTF8"
+      locale: "en_US.UTF-8"
+      data-checksums: "true"
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    synchronous_mode: false
+    synchronous_mode_strict: false
+    synchronous_node_count: 1
+    maximum_lag_on_failover: 33554432
+
+  initContainers:
+  - name: date
+    image: busybox
+    command: [ "/bin/date" ]
