@@ -51,4 +51,5 @@ apps/prometheus/kube-prometheus/*
 apps/kwatch/*
 !apps/kwatch/.gitkeep
 apps/argocd/base/secrets/*.yaml
-!apps/argocd/base/secrets/sealed-*.yaml
+storage/*
+!storage/.gitkeep

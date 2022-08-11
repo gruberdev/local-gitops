@@ -48,6 +48,7 @@ hostAliases:
       - argocd.k8s.localhost
       - vault.k8s.localhost
       - postgres.k8s.localhost
+      - dbs.k8s.localhost
 options:
   k3d:
     wait: true

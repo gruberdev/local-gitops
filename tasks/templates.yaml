@@ -17,10 +17,9 @@ vars:
 
 env:
   GIT_URI:
-    sh: git config --get remote.origin.url | sed -e 's/:/\//g'| sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g'
+    sh: git config --get remote.origin.url
 
 silent: true
-
 
 tasks:
   gen:
