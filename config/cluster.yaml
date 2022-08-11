@@ -3,7 +3,7 @@ kind: Simple
 metadata:
   name: demo
 servers: 1
-agents: 1
+agents: 2
 kubeAPI:
   host: "k8s.localhost"
   hostIP: "127.0.0.1"
@@ -28,12 +28,18 @@ registries:
         endpoint:
           - http://registry.local.gd:5002
 
-# Uncomment for local storage on host machine through volume bindings
+# Uncomment for local storage on host machine w/ custom volume bindings
 #volumes:
 #  - volume: /my/host/path:/path/in/node # same as `--volume '/my/host/path:/path/in/node@server:0;agent:*'`
 #    nodeFilters:
 #      - server:0
 #      - agent:*
+
+volumes:
+  - volume: "${PWD}/storage:/var/lib/rancher/k3s/storage"
+    nodeFilters:
+      - server:0
+      - agent:*
 
 hostAliases:
   - ip: 127.0.0.1
@@ -42,6 +48,7 @@ hostAliases:
       - argocd.k8s.localhost
       - vault.k8s.localhost
       - postgres.k8s.localhost
+      - dbs.k8s.localhost
 options:
   k3d:
     wait: true

@@ -167,7 +167,7 @@ tasks:
       - rm cert.pem key.pem base/tls-secret.yaml ca.pem 2> /dev/null
       - mkcert -install
       - mkcert -cert-file cert.pem -key-file key.pem -p12-file p12.pem "*.k8s.localhost" k8s.localhost "*.localhost" ::1 127.0.0.1 localhost 127.0.0.1 "*.internal.localhost" "*.local" 2> /dev/null
-      - base64 {{if eq OS "windows"}}-w{{else}}-b{{end}} 0 cert.pem > ca.pem
+      - base64 {{if eq OS "darwin"}}-b{{else}}-w{{end}} 0 cert.pem > ca.pem
       - task: highlight_bg
       - echo -e "Creating certificate secrets on Kubernetes for local TLS enabled by default\n"
       - task: reset
