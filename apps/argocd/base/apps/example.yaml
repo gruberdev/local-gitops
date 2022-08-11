@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/gruberdev/local-gitops.git'
     path: apps/example
-    targetRevision: feat/postgres
+    targetRevision: main
   destination:
     namespace: example
     name: in-cluster

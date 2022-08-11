@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/gruberdev/local-gitops.git'
     path: apps/argocd
-    targetRevision: feat/postgres
+    targetRevision: main
   destination:
     namespace: argocd
     name: in-cluster

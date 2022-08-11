@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/gruberdev/local-gitops.git'
     path: apps/databases/zalando
-    targetRevision: feat/postgres
+    targetRevision: main
   destination:
     namespace: databases
     name: in-cluster
