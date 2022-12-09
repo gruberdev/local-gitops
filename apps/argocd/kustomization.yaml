@@ -10,7 +10,6 @@ resources:
 - base/core/nginx.yaml
 - base/core/argocd.yaml
 - base/core/ingress.yaml
-- base/apps/vault.yaml
 - base/apps/example.yaml
 - base/utilities/metrics.yaml
 - base/utilities/zalando.yaml
@@ -19,15 +18,13 @@ resources:
 - base/utilities/kube-clean.yaml
 - base/utilities/descheduler.yaml
 - base/utilities/kubenurse.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.5.3/manifests/install.yaml
 
 components:
 - https://github.com/argoproj-labs/argocd-extensions/manifests
 
 patchesStrategicMerge:
 - overlay/argocd-svc.yaml
-- overlay/argocd-deployment.yaml
-- overlay/argocd-cm.yaml
 
 patchesJson6902:
 - path: overlay/deploy-command.yaml
@@ -40,8 +37,7 @@ patchesJson6902:
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newName: ghcr.io/argoproj/argocd
-  newTag: 2.4.0-dfeacd3e
+  newTag: v2.5.3
 
 commonAnnotations:
   reloader.stakater.com/auto: "true"
