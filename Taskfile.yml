@@ -19,7 +19,6 @@ silent: true
 
 includes:
   argocd: ./tasks/argocd.yaml
-  vault: ./tasks/vault.yaml
   templates: ./tasks/templates.yaml
   tools: ./tasks/tools.yaml
 
