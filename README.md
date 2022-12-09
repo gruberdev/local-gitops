@@ -8,14 +8,12 @@
 ## Resources
 
 ```bash
-Kubernetes Version: v1.24.4-k3s1
+Kubernetes Version: v1.25.4-k3s1
 ```
 ### Avaliable Kubernetes services:
 
 > - [ArgoCD][argocd-url] as the main GitOps tool | **Available at [argocd.k8s.localhost][argocd-localhost]**
 > - Access to the cluster using [Nginx Ingress][nginx-url].
-> - Secret Management with [Hashicorp's Vault][vault-url] | **Available at [vault.k8s.localhost][vault-localhost]**
->   - Secret access integration between Vault and ArgoCD using [argocd-vault-plugin][vault-plugin-url]
 > - On-demand databases clusters with [Zalando Operator for PostgreSQL][postgres-url] | **UI available at [dbs.k8s.localhost][dbs-localhost]**
 > - Hot-Reload secrets and configmaps to pods using [Reloader][reloader-url].
 > - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
@@ -35,7 +33,6 @@ Kubernetes Version: v1.24.4-k3s1
 > - [kubectl][kubectl-url] | [kustomize][kustomize-url] | [helm][helm-url] to apply local commands to the cluster
 > - [jq][jq-url] to manipulate the resulting JSON files and extract the required strings
 > - [hostctl][hostctl-url] to create the local domain on your hosts file *(optional, but recommended)*
-> - [vault-cli][vault-cli-url] to create the local domain on your hosts file *(required if Vault is chosen as the secret manager)*
 
 ---
 
