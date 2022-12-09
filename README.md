@@ -17,10 +17,8 @@ Kubernetes Version: v1.25.4-k3s1
 > - On-demand databases clusters with [Zalando Operator for PostgreSQL][postgres-url] | **UI available at [dbs.k8s.localhost][dbs-localhost]**
 > - Hot-Reload secrets and configmaps to pods using [Reloader][reloader-url].
 > - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
-> - Automated resource management with [kube-cleanup-operator][kube-cleanup-url] and [Descheduler][descheduler-url].
 > - Mirror resources between namespaces using [Reflector][reflector-url].
 > - Image caching for hot-swapping using [Kube-fledged][kubefledged-url]. (Only useful for multi-node k3d setups)
-> - Cluster monitoring for problematic resources using [kubenurse][kubenurse-url].
 
 ### Tools required locally
 
@@ -66,8 +64,6 @@ task
   - Alternative: [kube-dump][kube-dump-url] backup a k8s cluster as yaml manifests
   - Alternative: [Stash][stash-url], specifically for stateful applications.
 
-
-
 <!--- References --->
 [argocd-url]: https://argo-cd.readthedocs.io/en/stable/
 [nginx-url]: https://github.com/kubernetes/ingress-nginx
@@ -101,7 +97,6 @@ task
 [podman-url]: https://podman.io/
 [podman-steps]: https://k3d.io/v5.4.1/usage/advanced/podman/
 [hostctl-url]: https://github.com/guumaster/hostctl
-[vault-cli-url]: https://www.vaultproject.io/docs/install
 [kustomize-url]: https://kubectl.docs.kubernetes.io/installation/kustomize/
 [helm-url]: https://helm.sh/docs/intro/install/
 [chocolate-url]: https://chocolatey.org/install
