@@ -7,3 +7,5 @@
 127.0.0.1 vault.k8s.localhost
 127.0.0.1 dbs.k8s.localhost
 127.0.0.1 postgres.k8s.localhost
+127.0.0.1 app.k8s.localhost
+127.0.0.1 example.k8s.localhost

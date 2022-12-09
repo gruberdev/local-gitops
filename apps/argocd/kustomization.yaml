@@ -11,6 +11,7 @@ resources:
 - base/core/argocd.yaml
 - base/core/ingress.yaml
 - base/apps/example.yaml
+- base/apps/template.yaml
 - base/utilities/zalando.yaml
 - base/utilities/reloader.yaml
 - base/utilities/reflector.yaml

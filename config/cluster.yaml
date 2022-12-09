@@ -45,6 +45,8 @@ hostAliases:
   - ip: 127.0.0.1
     hostnames:
       - k8s.localhost
+      - app.k8s.localhost
+      - example.k8s.localhost
       - argocd.k8s.localhost
       - postgres.k8s.localhost
       - dbs.k8s.localhost

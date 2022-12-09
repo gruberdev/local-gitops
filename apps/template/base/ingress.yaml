@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: template-app-ingress
+  labels:
+    application: "postgres-operator-ui"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app.k8s.localhost
+    http:
+      paths:
+      - backend:
+          service:
+            name: podinfo
+            port:
+              number: 9898
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - app.k8s.localhost
+    secretName: tls-secret
