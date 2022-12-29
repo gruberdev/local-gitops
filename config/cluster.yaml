@@ -3,12 +3,12 @@ kind: Simple
 metadata:
   name: demo
 servers: 1
-agents: 2
+agents: 1
 kubeAPI:
   host: "k8s.localhost"
   hostIP: "127.0.0.1"
   hostPort: "6445"
-image: rancher/k3s:v1.25.4-k3s1
+image: rancher/k3s:v1.26.0-k3s1
 network: demo-net
 ports:
   - port: 80:80
