@@ -8,7 +8,7 @@
 ## Resources
 
 ```bash
-Kubernetes Version: v1.25.4-k3s1
+Kubernetes Version: v1.26.0-k3s1
 ```
 ### Avaliable Kubernetes services:
 
