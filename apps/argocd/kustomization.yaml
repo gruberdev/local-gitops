@@ -35,7 +35,7 @@ patchesJson6902:
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.5.5
+  newTag: v2.7.4
 
 commonAnnotations:
   reloader.stakater.com/auto: "true"
