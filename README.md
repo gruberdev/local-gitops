@@ -1,7 +1,7 @@
 # Local Gitops
   - [Project Objective](#project-objective)
   - [Resources versioning](#resources-versioning)
-    - [Avaliable Kubernetes services:](#avaliable-kubernetes-services)
+    - [Avaliable Kubernetes services](#avaliable-kubernetes-services)
     - [Tools required locally](#tools-required-locally)
     - [Installing requirements (*optional*)](#installing-requirements-optional)
     - [**Initializing the repository**](#initializing-the-repository)
@@ -32,7 +32,6 @@
 > - Access to the cluster using [Nginx Ingress][nginx-url].
 > - On-demand databases clusters with [Zalando Operator for PostgreSQL][postgres-url] | **UI available at [dbs.k8s.localhost][dbs-localhost]**
 > - Hot-Reload secrets and configmaps to pods using [Reloader][reloader-url].
-> - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
 > - Mirror resources between namespaces using [Reflector][reflector-url].
 
 ### Tools required locally
@@ -85,6 +84,10 @@ task tools:install
 ### In case you want to reset the environment
 
 Whenever you want to restart from scratch and create a new cluster, starting by deleteing the previous one and then recreating it and installing the appropriate resources, just type `task` again.
+
+<!---
+> - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
+-->
 
 <!--- References --->
 [argocd-url]: https://argo-cd.readthedocs.io/en/stable/
