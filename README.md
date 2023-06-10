@@ -11,15 +11,13 @@
 
 ### Project Objective
 
-> The goal of this project is to provide a simplified approach to creating your own local cluster, as well all the utilities you'll need to run a functional cluster, such as a image registry, garbage collectors, ingress configuration with tls and monitoring tools.
+> The objective of this project is to furnish a streamlined method for establishing your own local cluster, complete with necessary utilities such as an image registry, garbage collectors, ingress configuration with TLS, and monitoring tools
 >
-> It is also meant to provide a way for newcomers on the area both access to a functional GitOps configuration, and the capability to run it easily, to understand how it works in practice.
->
-> What this project does is create a local cluster using k3d, a lightweight version of k3s that can run all parts of the cluster inside containers, allowing for a more efficient way to simulate cluster locally than Minikube or other counterparts. Then the project also installs ArgoCD on top of the k3d cluster created, using this repository as resource to do GitOps, using the code inside `apps/` to create and configure the resources on your cluster.
->
-> It also configures a multi-OS tool that creates the DNS forwarding required to access your cluster resources using hostnames instead of IP addresses, using `mkcert` to create TLS/SSL-enabled requests towards your cluster ingresses, everything still running solely on local resources.
->
-> It is meant to be completed automated, but one can look into `tasks` to understand what is exactly doing, as `Taskfiles` are easy to read and only describe what commands were being executed every step of the automation process.
+> The project employs k3d to build a local cluster. k3d, a lightweight version of k3s, has the capacity to run all cluster components within containers, thus offering a more efficient local simulation alternative to Minikube or similar counterparts. Further, the project installs ArgoCD atop the k3d-created cluster, leveraging this repository as a resource for executing GitOps. It utilizes the code in the apps/ directory to generate and configure cluster resources.
+> 
+> Additionally, a multi-OS tool is configured to establish the DNS forwarding required for accessing cluster resources via hostnames rather than IP addresses. It employs `mkcert` to facilitate TLS/SSL-enabled requests towards your cluster ingresses, while continuing to operate exclusively on local resources.
+> 
+> Although the process is designed to be fully automated, users can delve into `tasks` to comprehend its operations. Taskfiles are easy to digest and they simply illustrate the commands executed at each automation phase.
 
 ## Resources versioning
 
@@ -28,7 +26,7 @@
 - ArgoCD Version: v2.7.4
 - k3d tested using v5.3 with v1alpha5 config file
 ```
-### Avaliable Kubernetes services:
+### Avaliable Kubernetes services
 
 > - [ArgoCD][argocd-url] as the main GitOps tool | **Available at [argocd.k8s.localhost][argocd-localhost]**
 > - Access to the cluster using [Nginx Ingress][nginx-url].
@@ -77,11 +75,11 @@ task tools:install
 >  ```
 >
 > If you don't have `task` installed, you can run
+>
 > ```sh
 >  make
 >  ```
->  which will install the >
- `task` binary for you and execute the command to run this repository's project by itself.
+>  which will install the `task` binary for you and execute the command to run this repository's project by itself.
 
 
 ### In case you want to reset the environment
