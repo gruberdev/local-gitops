@@ -95,6 +95,7 @@ tasks:
       - echo -e "\nYour cluster has been created. Type 'k3d cluster list' to confirm."
       - task: reset
     ignore_error: true
+    interactive: true
 
   dns:
     desc: Creates the DNS entry required for the local domain to work.
