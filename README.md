@@ -1,11 +1,9 @@
 # Local Gitops
-
-- [Local Gitops](#local-gitops)
-    - [Project Objective](#project-objective)
+  - [Project Objective](#project-objective)
   - [Resources versioning](#resources-versioning)
     - [Avaliable Kubernetes services:](#avaliable-kubernetes-services)
     - [Tools required locally](#tools-required-locally)
-      - [Installing requirements (*optional*)](#installing-requirements-optional)
+    - [Installing requirements (*optional*)](#installing-requirements-optional)
     - [**Initializing the repository**](#initializing-the-repository)
     - [In case you want to reset the environment](#in-case-you-want-to-reset-the-environment)
 
