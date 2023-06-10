@@ -68,21 +68,21 @@ task tools:install
 
 ### **Initializing the repository**
 
-> **First: You have to fork this repository**. 
+> **First: You have to fork this repository**.
 >
 > The [task][task-url] commands will ensure the repository is correctly configured once you run the bootstrapping command.
 >
 > cd into your forked repository, then run:
-> 
+>
 > ```sh
 > task
 >  ```
-> 
-> If you don't have `task` installed, you can run 
+>
+> If you don't have `task` installed, you can run
 > ```sh
 >  make
 >  ```
->  which will install the > 
+>  which will install the >
  `task` binary for you and execute the command to run this repository's project by itself.
 
 
