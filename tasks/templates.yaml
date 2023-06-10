@@ -24,171 +24,167 @@ silent: true
 tasks:
   gen:
     cmds:
-      - task: argocd
-      - task: certificate
-      - task: zalando
-      - task: example
+    - task: argocd
+    - task: certificate
+    - task: zalando
+    - task: example
 
   argocd:
     cmds:
-      - rm apps/argocd/base/core/argocd.yaml
-      - |
-        cat << EOF > apps/argocd/base/core/argocd.yaml
-        apiVersion: argoproj.io/v1alpha1
-        kind: Application
-        metadata:
-          name: argocd
-          finalizers:
-            - resources-finalizer.argocd.argoproj.io
-        spec:
-          project: core
-          source:
-            repoURL: '$GIT_URI'
-            path: apps/argocd
-            targetRevision: main
-          destination:
-            namespace: argocd
-            name: in-cluster
-          syncPolicy:
-            automated:
-              prune: true
-              selfHeal: true
-              allowEmpty: true
-            syncOptions:
-            - Validate=true
-            - CreateNamespace=true
-            - PrunePropagationPolicy=foreground
-            - PruneLast=true
-            - ApplyOutOfSyncOnly=false
-            - Prune=true
-            retry:
-              limit: -1
-              backoff:
-                duration: 20s
-                factor: 2
-                maxDuration: 15m
-        EOF
+    - |
+      kubectl apply -f - << EOF
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: argocd
+        finalizers:
+          - resources-finalizer.argocd.argoproj.io
+      spec:
+        project: core
+        source:
+          repoURL: '$GIT_URI'
+          path: apps/argocd
+          targetRevision: main
+        destination:
+          namespace: argocd
+          name: in-cluster
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+            allowEmpty: true
+          syncOptions:
+          - Validate=true
+          - CreateNamespace=true
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true
+          - ApplyOutOfSyncOnly=false
+          - Prune=true
+          retry:
+            limit: -1
+            backoff:
+              duration: 20s
+              factor: 2
+              maxDuration: 15m
+      EOF
     ignore_error: true
 
   certificate:
     cmds:
-      - rm apps/argocd/base/core/certificate.yaml
-      - |
-        cat << EOF > apps/argocd/base/core/certificate.yaml
-        apiVersion: argoproj.io/v1alpha1
-        kind: Application
-        metadata:
-          name: argocd
-          finalizers:
-            - resources-finalizer.argocd.argoproj.io
-        spec:
-          project: core
-          source:
-            repoURL: '$GIT_URI'
-            path: apps/argocd
-            targetRevision: main
-          destination:
-            namespace: argocd
-            name: in-cluster
-          syncPolicy:
-            automated:
-              prune: true
-              selfHeal: true
-              allowEmpty: true
-            syncOptions:
-            - Validate=true
-            - CreateNamespace=false
-            - PrunePropagationPolicy=foreground
-            - PruneLast=true
-            - ApplyOutOfSyncOnly=false
-            - Prune=true
-            retry:
-              limit: -1
-              backoff:
-                duration: 20s
-                factor: 2
-                maxDuration: 15m
-        EOF
+    - |
+      kubectl apply -f - << EOF
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: argocd
+        finalizers:
+          - resources-finalizer.argocd.argoproj.io
+      spec:
+        project: core
+        source:
+          repoURL: '$GIT_URI'
+          path: apps/argocd
+          targetRevision: main
+        destination:
+          namespace: argocd
+          name: in-cluster
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+            allowEmpty: true
+          syncOptions:
+          - Validate=true
+          - CreateNamespace=false
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true
+          - ApplyOutOfSyncOnly=false
+          - Prune=true
+          retry:
+            limit: -1
+            backoff:
+              duration: 20s
+              factor: 2
+              maxDuration: 15m
+      EOF
     ignore_error: true
 
   zalando:
     cmds:
-      - rm apps/argocd/base/utilities/zalando.yaml
-      - |
-        cat << EOF > apps/argocd/base/utilities/zalando.yaml
-        apiVersion: argoproj.io/v1alpha1
-        kind: Application
-        metadata:
-          name: postgres
-          finalizers:
-            - resources-finalizer.argocd.argoproj.io
-        spec:
-          project: cluster
-          source:
-            repoURL: '$GIT_URI'
-            path: apps/databases/zalando
-            targetRevision: main
-          destination:
-            namespace: databases
-            name: in-cluster
-          syncPolicy:
-            automated:
-              prune: true
-              selfHeal: true
-              allowEmpty: true
-            syncOptions:
-            - Validate=false
-            - CreateNamespace=true
-            - PrunePropagationPolicy=foreground
-            - PruneLast=true
-            - ApplyOutOfSyncOnly=false
-            - Prune=true
-            retry:
-              limit: -1
-              backoff:
-                duration: 20s
-                factor: 2
-                maxDuration: 15m
-        EOF
+    - |
+      kubectl apply -f - << EOF
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: postgres
+        finalizers:
+          - resources-finalizer.argocd.argoproj.io
+      spec:
+        project: cluster
+        source:
+          repoURL: '$GIT_URI'
+          path: apps/databases/zalando
+          targetRevision: main
+        destination:
+          namespace: databases
+          name: in-cluster
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+            allowEmpty: true
+          syncOptions:
+          - Validate=false
+          - CreateNamespace=true
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true
+          - ApplyOutOfSyncOnly=false
+          - Prune=true
+          retry:
+            limit: -1
+            backoff:
+              duration: 20s
+              factor: 2
+              maxDuration: 15m
+      EOF
     ignore_error: true
 
   example:
     cmds:
-      - rm apps/argocd/base/apps/example.yaml
-      - |
-        cat << EOF > apps/argocd/base/apps/example.yaml
-        apiVersion: argoproj.io/v1alpha1
-        kind: Application
-        metadata:
-          name: example-app
-          finalizers:
-            - resources-finalizer.argocd.argoproj.io
-        spec:
-          project: apps
-          source:
-            repoURL: '$GIT_URI'
-            path: apps/example
-            targetRevision: main
-          destination:
-            namespace: example
-            name: in-cluster
-          syncPolicy:
-            automated:
-              prune: true
-              selfHeal: true
-              allowEmpty: true
-            syncOptions:
-            - Validate=true
-            - CreateNamespace=true
-            - PrunePropagationPolicy=foreground
-            - PruneLast=true
-            - ApplyOutOfSyncOnly=false
-            - Prune=true
-            retry:
-              limit: -1
-              backoff:
-                duration: 20s
-                factor: 2
-                maxDuration: 15m
-        EOF
+    - |
+      kubectl apply -f - << EOF
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: example-app
+        finalizers:
+          - resources-finalizer.argocd.argoproj.io
+      spec:
+        project: apps
+        source:
+          repoURL: '$GIT_URI'
+          path: apps/example
+          targetRevision: main
+        destination:
+          namespace: example
+          name: in-cluster
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+            allowEmpty: true
+          syncOptions:
+          - Validate=true
+          - CreateNamespace=true
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true
+          - ApplyOutOfSyncOnly=false
+          - Prune=true
+          retry:
+            limit: -1
+            backoff:
+              duration: 20s
+              factor: 2
+              maxDuration: 15m
+      EOF
     ignore_error: true

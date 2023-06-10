@@ -1,14 +1,28 @@
 # Local Gitops
 
+- [Local Gitops](#local-gitops)
+    - [Project Objective](#project-objective)
+  - [Resources versioning](#resources-versioning)
+    - [Avaliable Kubernetes services:](#avaliable-kubernetes-services)
+    - [Tools required locally](#tools-required-locally)
+      - [Installing requirements (*optional*)](#installing-requirements-optional)
+    - [**Initializing the repository**](#initializing-the-repository)
+    - [In case you want to reset the environment](#in-case-you-want-to-reset-the-environment)
+
+---
+
 ### Project Objective
 
 > The goal of this project is to provide a simplified approach to creating your own local cluster, as well all the utilities you'll need to run a functional cluster, such as a image registry, garbage collectors, ingress configuration with tls and monitoring tools.
 >
 > It is also meant to provide a way for newcomers on the area both access to a functional GitOps configuration, and the capability to run it easily, to understand how it works in practice.
-## Resources
+
+## Resources versioning
 
 ```bash
-Kubernetes Version: v1.26.0-k3s1
+- Kubernetes Version: v1.26.5-k3s1
+- ArgoCD Version: v2.7.4
+- k3d tested using v5.3 with v1alpha5 config file
 ```
 ### Avaliable Kubernetes services:
 
@@ -18,7 +32,6 @@ Kubernetes Version: v1.26.0-k3s1
 > - Hot-Reload secrets and configmaps to pods using [Reloader][reloader-url].
 > - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
 > - Mirror resources between namespaces using [Reflector][reflector-url].
-> - Image caching for hot-swapping using [Kube-fledged][kubefledged-url]. (Only useful for multi-node k3d setups)
 
 ### Tools required locally
 
@@ -40,29 +53,36 @@ task help
 ```
 #### Installing requirements (*optional*)
 To install the required tools automatically <sub>(Requires [brew][brew-url] for Linux/MacOS and [Chocolatey][chocolate-url] for Windows.)</sub>
+
 ```sh
 task tools:install
-  ```
-#### Initializing the repository
+```
+
+---
+
+### **Initializing the repository**
 
 > **First: You have to fork this repository**. 
 >
 > The [task][task-url] commands will ensure the repository is correctly configured once you run the bootstrapping command.
 >
 > cd into your forked repository, then run:
-```sh
-task
-```
+> 
+> ```sh
+> task
+>  ```
+> 
+> If you don't have `task` installed, you can run 
+> ```sh
+>  make
+>  ```
+>  which will install the > 
+ `task` binary for you and execute the command to run this repository's project by itself.
 
 
----
+### In case you want to reset the environment
 
-### Plan to use but are not k3d-compatible for now:
-- **Storage:** [Longhorn][longhorn-url], require iscsi-compatible drivers. See [Using Longhorn in k3d #478][longhorn-issue].
-  - Alternative: Local Volumes. Uncomment `config/cluster.yaml` lines 31-36.
-- **Cluster Backup:** [Velero][velero-url], requires compatible storage provider. See [the official compatible list][velero-list-url].
-  - Alternative: [kube-dump][kube-dump-url] backup a k8s cluster as yaml manifests
-  - Alternative: [Stash][stash-url], specifically for stateful applications.
+Whenever you want to restart from scratch and create a new cluster, starting by deleteing the previous one and then recreating it and installing the appropriate resources, just type `task` again.
 
 <!--- References --->
 [argocd-url]: https://argo-cd.readthedocs.io/en/stable/
