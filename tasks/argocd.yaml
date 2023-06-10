@@ -79,8 +79,6 @@ tasks:
         password: $GH_PASS
         username: $GH_USER
       EOF
-    - kubectl apply -f apps/argocd/base/secrets/repo.yaml -n argocd
-    - rm apps/argocd/base/secrets/repo.yaml
     ignore_error: true
 
 
