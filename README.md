@@ -83,7 +83,7 @@ task tools:install
 
 ### In case you want to reset the environment
 
-Whenever you want to restart from scratch and create a new cluster, starting by deleteing the previous one and then recreating it and installing the appropriate resources, just type `task` again.
+Whenever you want to restart from scratch and create a new cluster, just type `task` again.
 
 <!---
 > - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
