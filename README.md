@@ -1,9 +1,11 @@
 # Local Gitops
-  - [Project Objective](#project-objective)
+
+- [Local Gitops](#local-gitops)
+    - [Project Objective](#project-objective)
   - [Resources versioning](#resources-versioning)
-    - [Avaliable Kubernetes services](#avaliable-kubernetes-services)
+    - [Avaliable Kubernetes services:](#avaliable-kubernetes-services)
     - [Tools required locally](#tools-required-locally)
-    - [Installing requirements (*optional*)](#installing-requirements-optional)
+      - [Installing requirements (*optional*)](#installing-requirements-optional)
     - [**Initializing the repository**](#initializing-the-repository)
     - [In case you want to reset the environment](#in-case-you-want-to-reset-the-environment)
 
@@ -22,11 +24,11 @@
 ## Resources versioning
 
 ```bash
-- Kubernetes Version: v1.26.5-k3s1
-- ArgoCD Version: v2.7.4
-- k3d tested using v5.3 with v1alpha5 config file
+- Kubernetes Version: v1.27.4-k3s1
+- ArgoCD Version: v2.8.0
+- k3d tested using v5.6 with v1alpha5 config file
 ```
-### Avaliable Kubernetes services
+### Avaliable Kubernetes services:
 
 > - [ArgoCD][argocd-url] as the main GitOps tool | **Available at [argocd.k8s.localhost][argocd-localhost]**
 > - Access to the cluster using [Nginx Ingress][nginx-url].
@@ -74,11 +76,16 @@ task tools:install
 >  ```
 >
 > If you don't have `task` installed, you can run
->
 > ```sh
 >  make
 >  ```
->  which will install the `task` binary for you and execute the command to run this repository's project by itself.
+>  which will install the >
+ `task` binary for you and execute the command to run this repository's project by itself. (It might require **sudo**, please read the commands being executed before doing anything with elevated permissions on your work environment.)
+
+### Where cluster resources are located
+
+> - All PVCs files are configured to be stored in the repository [`storage/`][storage-uri] folder. In case you want backup your environment, simply copy these files to another location, and transfer them back when needed.
+> - Local SSL/TLS certificates will be stored under the [`config/tls/`][tls-uri] folder. All of them are a part of the `.gitignore` file, in order to avoid being commited to your repository once created.
 
 
 ### In case you want to reset the environment
@@ -88,8 +95,9 @@ Whenever you want to restart from scratch and create a new cluster, just type `t
 <!---
 > - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
 -->
-
 <!--- References --->
+[tls-uri]: https://github.com/gruberdev/local-gitops/tree/main/config/tls
+[storage-uri]: https://github.com/gruberdev/local-gitops/tree/main/storage
 [argocd-url]: https://argo-cd.readthedocs.io/en/stable/
 [nginx-url]: https://github.com/kubernetes/ingress-nginx
 [vault-url]: https://github.com/hashicorp/vault
