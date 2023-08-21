@@ -16,7 +16,7 @@ resources:
 - base/utilities/reloader.yaml
 - base/utilities/reflector.yaml
 - base/utilities/descheduler.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.7.4/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.0/manifests/install.yaml
 
 components:
 - https://github.com/argoproj-labs/argocd-extensions/manifests
@@ -30,7 +30,7 @@ patchesStrategicMerge:
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.7.9
+  newTag: v2.8.0
 
 commonAnnotations:
   reloader.stakater.com/auto: "true"
