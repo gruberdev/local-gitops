@@ -79,8 +79,7 @@ task tools:install
 > ```sh
 >  make
 >  ```
->  which will install the >
- `task` binary for you and execute the command to run this repository's project by itself. (It might require **sudo**, please read the commands being executed before doing anything with elevated permissions on your work environment.)
+>  which will install the `task` binary for you and execute the command to run this repository's project by itself. <sub>(It might require **sudo**, please read the commands being executed before doing anything with elevated permissions on your work environment.)</sub>
 
 ### Where cluster resources are located
 
@@ -128,7 +127,7 @@ Whenever you want to restart from scratch and create a new cluster, just type `t
 [docker-url]: https://www.docker.com/products/docker-desktop/
 [rancher-url]: https://rancherdesktop.io/
 [podman-url]: https://podman.io/
-[podman-steps]: https://k3d.io/v5.4.1/usage/advanced/podman/
+[podman-steps]: https://k3d.io/v5.6.0/usage/advanced/podman/
 [hostctl-url]: https://github.com/guumaster/hostctl
 [kustomize-url]: https://kubectl.docs.kubernetes.io/installation/kustomize/
 [helm-url]: https://helm.sh/docs/intro/install/
