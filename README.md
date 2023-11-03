@@ -38,3 +38,9 @@ task argocd:password
 task start
 task stop
 ```
+
+### Creating a PR generator
+Create a new PR generator
+```
+task templates:pr_gen
+```

@@ -28,6 +28,41 @@ tasks:
     - task: certificate
     - task: example
 
+  pr_gen:
+    cmds:
+      - |
+        kubectl create secret generic github-token --from-literal=token=$GH_PASS -o yaml --dry-run=client > github-token-secret.yaml
+        kubectl -n argocd apply -f github-token-secret.yaml
+        kubectl apply -f - << EOF
+        apiVersion: argoproj.io/v1alpha1
+        kind: ApplicationSet
+        metadata:
+          name: myapps
+        spec:
+          generators:
+            - pullRequest:
+                github:
+                  owner: $GH_USER
+                  repo: local-gitops
+                  tokenRef:
+                    secretName: github-token
+                    key: token
+                  labels:
+                    - preview
+                requeueAfterSeconds: 60
+          template:
+            metadata:
+              name: ephemeral-env
+            spec:
+              source:
+                repoURL: 'https://github.com/skudasov/local-gitops'
+                path: apps/target/ephemeral
+              project: ephemeral
+              destination:
+                namespace: ephemeral
+                server: https://kubernetes.default.svc
+        EOF
+
   argocd:
     cmds:
     - |
