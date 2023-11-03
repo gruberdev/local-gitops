@@ -41,7 +41,7 @@ tasks:
   secret:
     vars:
       GIT_URI:
-        sh: git config --get remote.origin.url | sed -e 's/:/\//g'| sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g' | sed 's/.git$//'
+        sh: git config --get remote.origin.url | sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g' | sed 's/.git$//'
     cmds:
     - |
       kubectl apply -f - << EOF
@@ -62,7 +62,7 @@ tasks:
   repo:
     vars:
       GIT_URI:
-        sh: git config --get remote.origin.url | sed -e 's/:/\//g'| sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g' | sed 's/.git$//'
+        sh: git config --get remote.origin.url | sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g' | sed 's/.git$//'
     cmds:
     - |
       kubectl apply -f - << EOF

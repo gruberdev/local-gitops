@@ -61,6 +61,7 @@ tasks:
       - task: argocd:install
       - task: certs
       - task: argocd:secret
+      - task: argocd:repo
       - task: argocd:password
       - task: argocd:bridge
     ignore_error: true

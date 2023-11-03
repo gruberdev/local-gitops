@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: example-app
+  name: template-app
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: apps
   source:
-    repoURL: 'https://github.com/gruberdev/local-gitops.git'
+    repoURL: 'https://github.com/skudasov/local-gitops'
     path: apps/example
     targetRevision: main
   destination:
-    namespace: example
+    namespace: development
     name: in-cluster
   syncPolicy:
     automated:
@@ -26,8 +26,8 @@ spec:
     - ApplyOutOfSyncOnly=false
     - Prune=true
     retry:
-      limit: -1
+      limit: 5
       backoff:
-        duration: 20s
+        duration: 35s
         factor: 2
         maxDuration: 15m

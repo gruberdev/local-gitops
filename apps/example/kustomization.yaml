@@ -5,4 +5,4 @@ resources:
   - ingress.yaml
   - svc.yaml
 
-namespace: example
+namespace: development
