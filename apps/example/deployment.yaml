@@ -27,11 +27,6 @@ spec:
           limits:
             cpu: 0.1m
             memory: 50Mi
-        env:
-          - name: POSTGRES_USER
-            valueFrom: { secretKeyRef: { name: acid.minimal-db.credentials.postgresql.acid.zalan.do, key: username } }
-          - name: POSTGRES_PASSWORD
-            valueFrom: { secretKeyRef: { name: acid.minimal-db.credentials.postgresql.acid.zalan.do, key: password } }
         ports:
           - name: http
             containerPort: 80

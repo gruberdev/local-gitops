@@ -97,10 +97,7 @@ tasks:
       unzip hostctl_${HOSTCTL}_windows_64-bit.zip && \
       rm hostctl_${HOSTCTL}_windows_64-bit.zip LICENSE README.md{{end}}
       {{if eq OS "darwin"}}
-      curl -LO https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_darwin_64-bit.tar.gz && \
-      tar -xvf hostctl_${HOSTCTL}_darwin_64-bit.tar.gz && \
-      rm hostctl_${HOSTCTL}_darwin_64-bit.tar.gz LICENSE README.md && \
-      sudo mv hostctl /usr/local/bin{{end}}
+      brew install guumaster/tap/hostctl
       {{if eq OS "linux"}}
       curl -LO https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_linux_64-bit.tar.gz && \
       tar -xvf hostctl_${HOSTCTL}_linux_64-bit.tar.gz && \
@@ -113,3 +110,4 @@ tasks:
       echo -e "Installing Vault CLI" && \
       {{if eq OS "windows"}}choco install vault \
       {{else}}brew tap hashicorp/tap && brew install hashicorp/tap/vault{{end}}
+

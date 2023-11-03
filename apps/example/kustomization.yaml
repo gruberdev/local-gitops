@@ -4,7 +4,5 @@ resources:
   - deployment.yaml
   - ingress.yaml
   - svc.yaml
-  - db.yaml
-  - github.com/rancher/local-path-provisioner/examples/pvc
 
 namespace: example
