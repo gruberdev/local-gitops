@@ -37,6 +37,11 @@ tasks:
     - |
       sleep 0.1 && \
       {{.RESET}}
+  hook_git_secret:
+    cmds:
+      - |
+        kubectl create secret generic github-token --from-literal=token=$GH_PASS -o yaml --dry-run=client > github-token-secret.yaml
+        kubectl -n argocd apply -f github-token-secret.yaml
 
   # in case of issues use
   # argocd repocreds add https://github.com/skudasov/local-gitops --username $GH_USER --password $GH_PASS

@@ -54,12 +54,13 @@ tasks:
 
   default:
     cmds:
-#      - task: dns
-#      - task: templates:gen
+      - task: dns
+      - task: templates:gen
       - task: start
       - task: argocd:install
       - task: certs
       - task: argocd:secret
+      - task: argocd:hook_git_secret
       - task: argocd:repo
       - task: argocd:password
       - task: argocd:forward

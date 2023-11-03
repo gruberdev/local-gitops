@@ -1,16 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: myapps
+  name: ephemeral
 spec:
   generators:
     - pullRequest:
         github:
           owner: skudasov
           repo: local-gitops
-          api: https://git.example.com/
           tokenRef:
-            secretName: private-repo-creds
+            secretName: github-token
             key: token
           labels:
             - preview
@@ -20,9 +19,9 @@ spec:
       name: ephemeral-env
     spec:
       source:
-        repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
-        targetRevision: main
-      project: apps
+        repoURL: 'https://github.com/skudasov/local-gitops'
+        path: apps/target/ephemeral
+      project: ephemeral
       destination:
-        namespace: development
+        namespace: ephemeral
         server: https://kubernetes.default.svc

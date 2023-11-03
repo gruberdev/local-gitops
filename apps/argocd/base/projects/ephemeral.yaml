@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: apps
+  name: ephemeral
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

@@ -19,7 +19,7 @@ Copy a new password from log output
 
 Open ArgoCD UI and login with `admin` and your generated password
 ```
-https://argocd.k8s.localhost:8832
+https://localhost:8832
 ```
 
 ### Utilities

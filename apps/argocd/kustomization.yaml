@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+- base/pr/pr.yaml
 - base/projects/ephemeral.yaml
 - base/projects/apps.yaml
 - base/projects/core.yaml
