@@ -20,7 +20,6 @@ silent: true
 includes:
   argocd: ./tasks/argocd.yaml
   templates: ./tasks/templates.yaml
-  tools: ./tasks/tools.yaml
 
 tasks:
   clear:
@@ -55,15 +54,15 @@ tasks:
 
   default:
     cmds:
-      - task: dns
-      - task: templates:gen
+#      - task: dns
+#      - task: templates:gen
       - task: start
       - task: argocd:install
       - task: certs
       - task: argocd:secret
       - task: argocd:repo
       - task: argocd:password
-      - task: argocd:bridge
+      - task: argocd:forward
     ignore_error: true
 
   explain:
@@ -95,6 +94,18 @@ tasks:
       - task: highlight_normal
       - echo -e "\nYour cluster has been created. Type 'k3d cluster list' to confirm."
       - task: reset
+    ignore_error: true
+    interactive: true
+
+  stop:
+    desc: Stops your local k3d cluster.
+    preconditions:
+      - sh: "which k3d"
+        msg: "k3d {{.PATH_ERROR}}"
+    summary: |
+      Removing a k3d cluster
+    cmds:
+      - k3d cluster delete demo
     ignore_error: true
     interactive: true
 
@@ -135,11 +146,6 @@ tasks:
       - helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
       - helm repo add nginx-stable https://helm.nginx.com/stable
       - helm repo add hashicorp https://helm.releases.hashicorp.co
-      - helm repo add lwolf-charts http://charts.lwolf.org
-      - helm repo add emberstack https://emberstack.github.io/helm-charts
-      - helm repo add keyporttech https://keyporttech.github.io/helm-charts/
-      - helm repo add agones https://agones.dev/chart/stable
-      - helm repo add drone https://charts.drone.io
       - helm repo add stakater https://stakater.github.io/stakater-charts
       - helm repo add ananace-charts https://ananace.gitlab.io/charts
       - helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets

@@ -7,14 +7,14 @@ metadata:
 spec:
   description: Core Project
   sourceRepos:
-  - '*'
+    - '*'
   destinations:
-  - namespace: kube-system
-    server: https://kubernetes.default.svc
-  - namespace: argocd
-    server: https://kubernetes.default.svc
+    - namespace: kube-system
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
+    - group: '*'
+      kind: '*'
   orphanedResources:
     warn: false

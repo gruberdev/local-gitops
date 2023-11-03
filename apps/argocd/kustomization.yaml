@@ -2,11 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- base/projects/core.yaml
-- base/projects/cluster.yaml
-- base/projects/monitoring.yaml
-- base/projects/networking.yaml
 - base/projects/apps.yaml
+- base/projects/core.yaml
 - base/core/nginx.yaml
 - base/core/argocd.yaml
 - base/core/ingress.yaml
@@ -19,11 +16,6 @@ resources:
 components:
 - https://github.com/argoproj-labs/argocd-extensions/manifests
 
-patchesStrategicMerge:
-- overlay/argocd-svc.yaml
-- overlay/argocd-rbac.yaml
-- overlay/argocd-cm.yaml
-- overlay/argocd-cr.yaml
 
 namespace: argocd
 images:
@@ -32,3 +24,8 @@ images:
 
 commonAnnotations:
   reloader.stakater.com/auto: "true"
+patches:
+- path: overlay/argocd-svc.yaml
+- path: overlay/argocd-rbac.yaml
+- path: overlay/argocd-cm.yaml
+- path: overlay/argocd-cr.yaml

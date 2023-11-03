@@ -38,6 +38,10 @@ tasks:
       sleep 0.1 && \
       {{.RESET}}
 
+  # in case of issues use
+  # argocd repocreds add https://github.com/skudasov/local-gitops --username $GH_USER --password $GH_PASS
+  # argocd repo add https://github.com/skudasov/local-gitops --username $GH_USER --password $GH_PASS
+
   secret:
     vars:
       GIT_URI:
@@ -105,7 +109,7 @@ tasks:
     - kustomize build | kubectl delete -f -
     ignore_error: true
 
-  bridge: kubectl port-forward -n argocd svc/argocd-server 8832:80
+  forward: kubectl port-forward -n argocd svc/argocd-server 8832:80
 
   password:
     cmds:

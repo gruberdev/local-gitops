@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: myapps
+spec:
+  generators:
+    - pullRequest:
+        github:
+          owner: skudasov
+          repo: local-gitops
+          api: https://git.example.com/
+          tokenRef:
+            secretName: private-repo-creds
+            key: token
+          labels:
+            - preview
+        requeueAfterSeconds: 60
+  template:
+    metadata:
+      name: ephemeral-env
+    spec:
+      source:
+        repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
+        targetRevision: main
+      project: apps
+      destination:
+        namespace: development
+        server: https://kubernetes.default.svc
