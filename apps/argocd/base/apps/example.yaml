@@ -8,7 +8,7 @@ spec:
   project: apps
   source:
     repoURL: 'https://github.com/skudasov/local-gitops'
-    path: apps/example
+    path: apps/target/example
     targetRevision: main
   destination:
     namespace: development
