@@ -11,7 +11,7 @@
 		"ghcr.io/devcontainers-contrib/features/argo-cd:1": {},
 		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
 		"ghcr.io/rio/features/k3d:1": {},
-		"ghcr.io/devcontainers-contrib/features/wget-apt-get:1": {},
+		"ghcr.io/devcontainers-contrib/features/wget-apt-get:1": {}
 	},
 	"customizations": {
 		"vscode": {
