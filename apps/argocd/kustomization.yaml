@@ -15,14 +15,10 @@ resources:
 - base/utilities/reflector.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.3/manifests/install.yaml
 
-components:
-- https://github.com/argoproj-labs/argocd-extensions/manifests
-
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
   newTag: v2.11.3
-
 patches:
 - patch: |-
     - op: replace
