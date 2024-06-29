@@ -13,7 +13,7 @@ resources:
 - base/apps/example.yaml
 - base/utilities/reloader.yaml
 - base/utilities/reflector.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.0/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.3/manifests/install.yaml
 
 components:
 - https://github.com/argoproj-labs/argocd-extensions/manifests
@@ -21,7 +21,26 @@ components:
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.8.0
+  newTag: v2.11.3
+
+patches:
+- patch: |-
+    - op: replace
+      path: "/metadata/namespace"
+      value: "monitoring"
+  target:
+    kind: ServiceMonitor
+- patch: |-
+    - op: add
+      path: "/spec/strategy"
+      value:
+        type: "Recreate"
+    - op: replace
+      path: "/spec/template/spec/serviceAccountName"
+      value: "argocd-server"
+  target:
+    kind: Deployment
+    name: argocd-server
 
 commonAnnotations:
   reloader.stakater.com/auto: "true"
