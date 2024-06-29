@@ -11,10 +11,7 @@
 		"ghcr.io/devcontainers-contrib/features/argo-cd:1": {},
 		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
 		"ghcr.io/rio/features/k3d:1": {},
-		"ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
-		"ghcr.io/devcontainers-contrib/features/curl-homebrew:1": {},
 		"ghcr.io/devcontainers-contrib/features/wget-apt-get:1": {},
-		"ghcr.io/paul-gilber/devcontainer-features/yamllint-homebrew:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -32,7 +29,7 @@
 	"forwardPorts": ["8080:8080"],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
- "postCreateCommand": "docker --version"
+ "postCreateCommand": "task tools:install"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

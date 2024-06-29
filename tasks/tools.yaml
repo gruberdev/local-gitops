@@ -6,11 +6,15 @@ silent: true
 env:
   VAULT_ADDR: "https://vault.k8s.localhost"
   VAULT_SKIP_VERIFY: "true"
+  HOMEBREW_NO_AUTO_UPDATE: "true"
+  HOMEBREW_NO_ENV_HINTS: "true"
+  HOMEBREW_NO_INSTALL_CLEANUP: "true"
   HOSTCTL: 1.1.4
 
 tasks:
   install:
     cmds:
+    - task: brew
     - task: mkcert
     - task: kustomize
     - task: k3d
@@ -18,6 +22,16 @@ tasks:
     - task: jq
     - task: vault
     - task: hostctl
+
+  brew:
+    env:
+      NONINTERACTIVE: "1"
+    cmds:
+    - sudo echo "Testing sudo credentials"
+    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/vscode/.bashrc
+    - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    ignore_error: true
 
   mkcert:
     cmds:
