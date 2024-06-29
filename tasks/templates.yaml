@@ -33,46 +33,7 @@ tasks:
         source:
           repoURL: '$GIT_URI'
           path: apps/argocd
-          targetRevision: main
-        destination:
-          namespace: argocd
-          name: in-cluster
-        syncPolicy:
-          automated:
-            prune: true
-            selfHeal: true
-            allowEmpty: true
-          syncOptions:
-          - Validate=true
-          - CreateNamespace=true
-          - PrunePropagationPolicy=foreground
-          - PruneLast=true
-          - ApplyOutOfSyncOnly=false
-          - Prune=true
-          retry:
-            limit: -1
-            backoff:
-              duration: 20s
-              factor: 2
-              maxDuration: 15m
-      EOF
-    ignore_error: true
-
-  certificate:
-    cmds:
-    - |
-      kubectl apply -f - << EOF
-      apiVersion: argoproj.io/v1alpha1
-      kind: Application
-      metadata:
-        name: argocd
-        namespace: argocd
-      spec:
-        project: core
-        source:
-          repoURL: '$GIT_URI'
-          path: apps/argocd
-          targetRevision: main
+          targetRevision: feat/upgrade
         destination:
           namespace: argocd
           name: in-cluster
@@ -107,7 +68,7 @@ tasks:
         source:
           repoURL: '$GIT_URI'
           path: apps/example
-          targetRevision: main
+          targetRevision: feat/upgrade
         destination:
           namespace: example
           name: in-cluster

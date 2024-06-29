@@ -75,7 +75,7 @@ tasks:
     - kustomize build | kubectl delete -f -
     ignore_error: true
 
-  bridge: kubectl port-forward -n argocd svc/argocd-server 8832:80 --address 0.0.0.0
+  bridge: kubectl port-forward -n argocd svc/argocd-server 8080:80 --address 0.0.0.0
 
   password:
     cmds:

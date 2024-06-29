@@ -22,7 +22,8 @@
 				"task.vscode-task",
 				"kennylong.kubernetes-yaml-formatter",
 				"matt-rudge.auto-open-preview-panel",
-				"bierner.markdown-preview-github-styles"
+				"bierner.markdown-preview-github-styles",
+				"Phu1237.vs-browser"
 			]
 		}
 	},

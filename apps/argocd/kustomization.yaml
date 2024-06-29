@@ -11,11 +11,8 @@ resources:
 - base/core/argocd.yaml
 - base/core/ingress.yaml
 - base/apps/example.yaml
-- base/apps/template.yaml
-- base/utilities/zalando.yaml
 - base/utilities/reloader.yaml
 - base/utilities/reflector.yaml
-- base/utilities/descheduler.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.0/manifests/install.yaml
 
 components:

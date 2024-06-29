@@ -89,10 +89,10 @@ tasks:
     - task: cli:reset
 
   repos:
-    desc: Adds and updates all the required Helm repositories locally.
     preconditions:
     - sh: "which helm"
       msg: "helm {{.PATH_ERROR}}"
+    internal: true
     cmds:
     - task: cli:clear
     - task: cli:highlight_bg
