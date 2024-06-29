@@ -1,43 +1,14 @@
 version: '3'
+
+includes:
+  cli: ./cli.yaml
 vars:
-  CYAN: tput setaf 6
-  RED: tput setaf 1
-  YELLOW: tput setaf 3
-  GREEN: tput setaf 2
-  BLUE: tput setaf 1
-  PURPLE: tput setaf 5
-  BG_B: tput setab 0
-  BOLD: tput bold
-  RESET: tput sgr0
-  CLEAR: tput reset
   INT_REGISTRY: registry.localhost
   PATH_ERROR: is not installed or correctly configured in PATH.
 
 silent: true
 
 tasks:
-  clear:
-    cmds:
-    - sleep 0.1 && {{.CLEAR}}
-  highlight_bg:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.CYAN}} && \
-      {{.BOLD}} && \
-      {{.BG_B}}
-  highlight_normal:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.CYAN}} && \
-      {{.BOLD}}
-  reset:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.RESET}}
-
   secret:
     vars:
       GIT_URI:
@@ -81,7 +52,6 @@ tasks:
       EOF
     ignore_error: true
 
-
   install:
     desc: Installs ArgoCD resources manually on the local cluster
     dir: apps/argocd
@@ -105,7 +75,7 @@ tasks:
     - kustomize build | kubectl delete -f -
     ignore_error: true
 
-  bridge: kubectl port-forward -n argocd svc/argocd-server 8832:80
+  bridge: kubectl port-forward -n argocd svc/argocd-server 8832:80 --address 0.0.0.0
 
   password:
     cmds:
