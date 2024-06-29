@@ -17,7 +17,6 @@ tasks:
   gen:
     cmds:
     - task: argocd
-    - task: certificate
     - task: example
 
   argocd:

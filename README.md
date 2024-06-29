@@ -30,15 +30,14 @@
 ## Resources versioning
 
 ```bash
-- Kubernetes Version: v1.27.4-k3s1
+- Kubernetes Version: v1.30.2-k3s1
 - ArgoCD Version: v2.8.0
-- k3d tested using v5.6 with v1alpha5 config file
+- k3d tested using v5.6.3 with v1alpha5 config file
 ```
 ### Avaliable Kubernetes services:
 
 > - [ArgoCD][argocd-url] as the main GitOps tool | **Available at [argocd.k8s.localhost][argocd-localhost]**
 > - Access to the cluster using [Nginx Ingress][nginx-url].
-> - On-demand databases clusters with [Zalando Operator for PostgreSQL][postgres-url] | **UI available at [dbs.k8s.localhost][dbs-localhost]**
 > - Hot-Reload secrets and configmaps to pods using [Reloader][reloader-url].
 > - Mirror resources between namespaces using [Reflector][reflector-url].
 

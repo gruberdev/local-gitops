@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - deployment.yaml
-  - ingress.yaml
-  - svc.yaml
-  - github.com/rancher/local-path-provisioner/examples/pvc
+- deployment.yaml
+- ingress.yaml
+- svc.yaml
+- github.com/rancher/local-path-provisioner/examples/pvc
 
 namespace: example
