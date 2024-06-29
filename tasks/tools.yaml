@@ -1,47 +1,20 @@
 version: '3'
-vars:
-  CYAN: tput setaf 6
-  RED: tput setaf 1
-  YELLOW: tput setaf 3
-  GREEN: tput setaf 2
-  BLUE: tput setaf 1
-  PURPLE: tput setaf 5
-  BG_B: tput setab 0
-  BOLD: tput bold
-  RESET: tput sgr0
-  CLEAR: tput reset
+includes:
+  cli: ./cli.yaml
 
 silent: true
 env:
   VAULT_ADDR: "https://vault.k8s.localhost"
   VAULT_SKIP_VERIFY: "true"
+  HOMEBREW_NO_AUTO_UPDATE: "true"
+  HOMEBREW_NO_ENV_HINTS: "true"
+  HOMEBREW_NO_INSTALL_CLEANUP: "true"
   HOSTCTL: 1.1.4
 
 tasks:
-  clear:
-    cmds:
-    - sleep 0.1 && {{.CLEAR}}
-  highlight_bg:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.CYAN}} && \
-      {{.BOLD}} && \
-      {{.BG_B}}
-  highlight_normal:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.CYAN}} && \
-      {{.BOLD}}
-  reset:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.RESET}}
-
   install:
     cmds:
+    - task: brew
     - task: mkcert
     - task: kustomize
     - task: k3d
@@ -49,6 +22,16 @@ tasks:
     - task: jq
     - task: vault
     - task: hostctl
+
+  brew:
+    env:
+      NONINTERACTIVE: "1"
+    cmds:
+    - sudo echo "Testing sudo credentials"
+    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/vscode/.bashrc
+    - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    ignore_error: true
 
   mkcert:
     cmds:

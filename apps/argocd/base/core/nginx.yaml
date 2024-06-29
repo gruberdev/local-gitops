@@ -2,21 +2,18 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ingress-nginx
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: core
   source:
-    repoURL: 'https://github.com/bitnami/charts.git'
-    targetRevision: HEAD
-    path: bitnami/nginx-ingress-controller
+    chart: nginx
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: 15.9.0
     helm:
       releaseName: nginx
-      parameters:
-      - name: "default-ssl-certificate"
-        value: "ingress/nginx-server-certs"
-      - name: "tcpConfigMapNamespace"
-        value: "databases"
+      values: |
+        extraArgs:
+          default-ssl-certificate: "kube-system/tls-secret"
+          ingress-class: nginx
   destination:
     namespace: kube-system
     name: in-cluster
@@ -24,15 +21,12 @@ spec:
     automated:
       prune: true
       selfHeal: true
-      allowEmpty: true
     syncOptions:
-    - Validate=true
-    - CreateNamespace=false
-    - PrunePropagationPolicy=foreground
-    - PruneLast=true
+    - Prune=true
+    - ServerSideApply=true
     retry:
-      limit: -1
+      limit: 5
       backoff:
-        duration: 60s
+        duration: 20s
         factor: 2
-        maxDuration: 30m
+        maxDuration: 15m
