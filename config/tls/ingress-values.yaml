@@ -1,2 +1,0 @@
-extraArgs:
-  default-ssl-certificate: "ingress/nginx-server-certs"

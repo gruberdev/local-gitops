@@ -5,9 +5,9 @@ metadata:
 spec:
   project: core
   source:
-    repoURL: 'https://github.com/bitnami/charts.git'
-    targetRevision: 11.3.8
-    chart: nginx-ingress-controller
+    chart: nginx
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: 15.9.0
     helm:
       releaseName: nginx
       values: |

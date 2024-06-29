@@ -6,7 +6,7 @@ servers: 1
 agents: 2
 kubeAPI:
   host: "k8s.localhost"
-  hostIP: "127.0.0.1"
+  hostIP: "0.0.0.0"
   hostPort: "6445"
 image: rancher/k3s:v1.30.2-k3s1
 network: demo-net
