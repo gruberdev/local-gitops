@@ -37,8 +37,6 @@ spec:
               cpu: 50m
               memory: 128Mi
           volumeMounts:
-            - name: styles
-              mountPath: /shared/app/custom
             - name: extensions
               mountPath: /tmp/extensions/
       volumes:
