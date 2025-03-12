@@ -7,17 +7,22 @@ resources:
 - base/projects/monitoring.yaml
 - base/projects/networking.yaml
 - base/projects/apps.yaml
+
 - base/core/nginx.yaml
 - base/core/argocd.yaml
 - base/core/ingress.yaml
+
 - base/apps/example.yaml
+
 - base/utilities/reflector.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.3/manifests/install.yaml
+
+- github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.1/manifests/install.yaml
 
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.11.3
+  newTag: v2.13.1
 patches:
 - patch: |-
     - op: replace
@@ -62,6 +67,23 @@ patches:
                   memory: 64Mi
 - patch: |
     apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: argocd-notifications-controller
+    spec:
+      template:
+        spec:
+          containers:
+            - name: argocd-notifications-controller
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 256Mi
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+- patch: |
+    apiVersion: apps/v1
     kind: StatefulSet
     metadata:
       name: argocd-application-controller
@@ -72,82 +94,107 @@ patches:
             - name: argocd-application-controller
               resources:
                 limits:
-                  cpu: 200m
-                  memory: 512Mi
+                  cpu: 1000m
+                  memory: 2048Mi
                 requests:
-                  cpu: 100m
-                  memory: 512Mi
+                  cpu: 1000m
+                  memory: 1024Mi
 - patch: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: argocd-redis
     spec:
+      replicas: 1
+      strategy:
+        type: Recreate
       template:
         spec:
           containers:
             - name: redis
               resources:
                 limits:
-                  cpu: 100m
-                  memory: 128Mi
+                  cpu: 60m
+                  memory: 512Mi
                 requests:
-                  cpu: 100m
-                  memory: 128Mi
+                  cpu: 60m
+                  memory: 256Mi
           initContainers:
             - name: secret-init
               resources:
                 limits:
-                  cpu: 50m
-                  memory: 64Mi
+                  cpu: 250m
+                  memory: 512Mi
                 requests:
-                  cpu: 50m
-                  memory: 64Mi
-- patch: |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: argocd-server
-    spec:
-      template:
-        spec:
-          containers:
-            - name: argocd-server
-              resources:
-                limits:
-                  cpu: 100m
-                  memory: 128Mi
-                requests:
-                  cpu: 50m
-                  memory: 128Mi
-          initContainers:
-            - name: extension-metrics
-              resources:
-                limits:
-                  cpu: 50m
-                  memory: 64Mi
-                requests:
-                  cpu: 50m
-                  memory: 32Mi
+                  cpu: 250m
+                  memory: 256Mi
+# - patch: |
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     metadata:
+#       name: argocd-server
+#     spec:
+#       replicas: 1
+#       strategy:
+#         type: Recreate
+#       template:
+#         spec:
+#           containers:
+#             - name: argocd-server
+#               resources:
+#                 limits:
+#                   cpu: 200m
+#                   memory: 512Mi
+#                 requests:
+#                   cpu: 200m
+#                   memory: 256Mi
+#           initContainers:
+#             - name: extension-metrics
+#               resources:
+#                 limits:
+#                   cpu: 60mm
+#                   memory: 64Mi
+#                 requests:
+#                   cpu: 60m
+#                   memory: 32Mi
+# - patch: |
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     metadata:
+#       name: argocd-notifications-controller
+#     spec:
+#       template:
+#         spec:
+#           containers:
+#             - name: argocd-notifications-controller
+#               resources:
+#                 limits:
+#                   cpu: 150m
+#                   memory: 256Mi
+#                 requests:
+#                   cpu: 50m
+#                   memory: 128Mi
 - patch: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: argocd-repo-server
     spec:
+      replicas: 1
       strategy:
         type: Recreate
       template:
         spec:
+          nodeSelector:
+            kubernetes.io/hostname: controller-one
           containers:
             - name: argocd-repo-server
               resources:
                 limits:
-                  cpu: 100m
-                  memory: 128Mi
+                  memory: 2Gi
                 requests:
-                  cpu: 50m
-                  memory: 64Mi
+                  cpu: 200m
+                  memory: 512Mi
 
 patches:
 - path: overlay/argocd-svc.yaml
