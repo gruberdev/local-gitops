@@ -5,17 +5,39 @@ metadata:
 spec:
   project: core
   source:
-    chart: nginx
-    repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 15.9.0
-    helm:
-      releaseName: nginx
-      values: |
-        extraArgs:
-          default-ssl-certificate: "kube-system/tls-secret"
-          ingress-class: nginx
+    repoURL: https://github.com/kubernetes/ingress-nginx.git
+    targetRevision: ingress-nginx-3.15.2
+    path: deploy/static/provider/kind
+    kustomize:
+      namespace: ingress-controller
+      replicas:
+      - name: ingress-nginx-controller
+        count: 1
+      patches:
+        - target:
+            kind: Deployment
+            name: ingress-nginx-controller
+          patch: |-
+            - op: remove
+              path: /spec/template/spec/tolerations
+            - op: remove
+              path: /spec/template/spec/nodeSelector
+            - op: replace
+              path: /spec/strategy
+              value:
+                type: Recreate
+            - op: add
+              path: /spec/template/spec/containers/0/args
+              value:
+                - /nginx-ingress-controller
+                - --default-ssl-certificate=ingress-controller/tls
+                - --ingress-class=nginx
+                - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+                - --validating-webhook=:8443
+                - --validating-webhook-certificate=/usr/local/certificates/cert
+                - --validating-webhook-key=/usr/local/certificates/key
   destination:
-    namespace: kube-system
+    namespace: ingress-controller
     name: in-cluster
   syncPolicy:
     automated:
@@ -24,9 +46,18 @@ spec:
     syncOptions:
     - Prune=true
     - ServerSideApply=true
+    - CreateNamespace=true
     retry:
       limit: 5
       backoff:
         duration: 20s
         factor: 2
         maxDuration: 15m
+  ignoreDifferences:
+  - group: ""
+    kind: Service
+    name: ingress-nginx-controller
+    namespace: ingress-controller
+    jsonPointers:
+    - /spec/ports/0/nodePort
+    - /spec/ports/1/nodePort

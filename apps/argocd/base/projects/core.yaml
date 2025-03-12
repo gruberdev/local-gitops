@@ -7,9 +7,7 @@ spec:
   sourceRepos:
   - '*'
   destinations:
-  - namespace: kube-system
-    server: https://kubernetes.default.svc
-  - namespace: argocd
+  - namespace: '*'
     server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: '*'
