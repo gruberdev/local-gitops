@@ -60,27 +60,9 @@ patches:
             - name: argocd-notifications-controller
               resources:
                 limits:
-                  cpu: 50m
-                  memory: 64Mi
+                  memory: 128Mi
                 requests:
                   cpu: 50m
-                  memory: 64Mi
-- patch: |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: argocd-notifications-controller
-    spec:
-      template:
-        spec:
-          containers:
-            - name: argocd-notifications-controller
-              resources:
-                limits:
-                  cpu: 100m
-                  memory: 256Mi
-                requests:
-                  cpu: 100m
                   memory: 128Mi
 - patch: |
     apiVersion: apps/v1
@@ -94,11 +76,10 @@ patches:
             - name: argocd-application-controller
               resources:
                 limits:
-                  cpu: 1000m
-                  memory: 2048Mi
+                  memory: 128Mi
                 requests:
-                  cpu: 1000m
-                  memory: 1024Mi
+                  cpu: 50m
+                  memory: 128Mi
 - patch: |
     apiVersion: apps/v1
     kind: Deployment
@@ -114,20 +95,18 @@ patches:
             - name: redis
               resources:
                 limits:
-                  cpu: 60m
-                  memory: 512Mi
+                  memory: 128Mi
                 requests:
-                  cpu: 60m
-                  memory: 256Mi
+                  cpu: 50m
+                  memory: 128Mi
           initContainers:
             - name: secret-init
               resources:
                 limits:
-                  cpu: 250m
-                  memory: 512Mi
+                  memory: 128Mi
                 requests:
-                  cpu: 250m
-                  memory: 256Mi
+                  cpu: 50m
+                  memory: 128Mi
 # - patch: |
 #     apiVersion: apps/v1
 #     kind: Deployment
@@ -191,10 +170,10 @@ patches:
             - name: argocd-repo-server
               resources:
                 limits:
-                  memory: 2Gi
+                  memory: 128Mi
                 requests:
-                  cpu: 200m
-                  memory: 512Mi
+                  cpu: 50m
+                  memory: 128Mi
 
 patches:
 - path: overlay/argocd-svc.yaml
