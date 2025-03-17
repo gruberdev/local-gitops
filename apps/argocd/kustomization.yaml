@@ -30,7 +30,7 @@ patchesStrategicMerge:
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.11.3
+  newTag: v3.0.0
 
 commonAnnotations:
   reloader.stakater.com/auto: "true"
