@@ -5,11 +5,27 @@ metadata:
 spec:
   project: cluster
   source:
-    repoURL: https://emberstack.github.io/helm-charts
-    chart: reflector
-    targetRevision: 9.0.322
+    repoURL: https://github.com/emberstack/kubernetes-reflector.git
+    path: src/helm/reflector
+    targetRevision: v9.0.322
     helm:
       releaseName: reflector
+      values: |
+        replicaCount: 1
+        image:
+          repository: docker.io/emberstack/kubernetes-reflector
+          pullPolicy: IfNotPresent
+        namespaceOverride: "kube-system"
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        configuration:
+          kubernetes:
+            skipTlsVerify: true
   destination:
     namespace: kube-system
     name: in-cluster
