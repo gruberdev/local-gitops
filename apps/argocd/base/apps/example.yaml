@@ -17,14 +17,11 @@ spec:
       selfHeal: true
       allowEmpty: true
     syncOptions:
-    - Validate=true
-    - CreateNamespace=true
-    - PrunePropagationPolicy=foreground
-    - PruneLast=true
-    - ApplyOutOfSyncOnly=false
     - Prune=true
+    - ServerSideApply=true
+    - CreateNamespace=true
     retry:
-      limit: -1
+      limit: 5
       backoff:
         duration: 20s
         factor: 2

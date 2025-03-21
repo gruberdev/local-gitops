@@ -2,20 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: whoami
-  labels:
-    app: whoami
-  annotations:
-    reloader.stakater.com/auto: "true"
+  name: deployment
 spec:
-  selector:
-    matchLabels:
-      app: whoami
   replicas: 1
   template:
-    metadata:
-      labels:
-        app: whoami
     spec:
       containers:
       - name: whoami
@@ -27,11 +17,6 @@ spec:
           limits:
             cpu: 0.1m
             memory: 50Mi
-        env:
-          - name: POSTGRES_USER
-            valueFrom: { secretKeyRef: { name: acid.minimal-db.credentials.postgresql.acid.zalan.do, key: username } }
-          - name: POSTGRES_PASSWORD
-            valueFrom: { secretKeyRef: { name: acid.minimal-db.credentials.postgresql.acid.zalan.do, key: password } }
         ports:
           - name: http
             containerPort: 80

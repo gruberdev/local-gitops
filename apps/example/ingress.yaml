@@ -1,22 +1,21 @@
-  apiVersion: networking.k8s.io/v1
-  kind: Ingress
-  metadata:
-    name: example
-    namespace: kube-system
-  spec:
-    ingressClassName: nginx
-    rules:
-      - host: whoami.k8s.localhost
-        http:
-          paths:
-            - backend:
-                service:
-                  name: whoami-svc
-                  port:
-                    number: 80
-              path: /
-              pathType: Prefix
-    tls:
-        - hosts:
-            - whoami.k8s.localhost
-          secretName: tls-secret
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: whoami.k8s.localhost
+    http:
+      paths:
+      - backend:
+          service:
+            name: whoami-svc
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - whoami.k8s.localhost
+    secretName: tls-secret

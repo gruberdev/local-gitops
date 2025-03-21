@@ -7,3 +7,14 @@ resources:
 - github.com/rancher/local-path-provisioner/examples/pvc
 
 namespace: example
+nameSuffix: "-example"
+
+commonAnnotations:
+  argocd.argoproj.io/sync-wave: "1"
+
+labels:
+- includeSelectors: true
+  includeTemplates: true
+  pairs:
+    cluster.app: example
+    app.kubernetes.io/part-of: example
