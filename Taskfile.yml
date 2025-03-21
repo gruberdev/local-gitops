@@ -110,7 +110,7 @@ tasks:
     - task: cli:highlight_bg
     - echo -e "Creating certificate secrets on Kubernetes for local TLS enabled by default\n"
     - task: cli:reset
-    - kubectl config set-context --current --namespace=ingress-controller --cluster=k3d-demo
+    - kubectl config set-context --current --namespace=kube-system --cluster=k3d-demo
     - kubectl create secret tls tls-secret --cert=cert.pem --key=key.pem --dry-run=client -o yaml >base/tls-secret.yaml
     - kubectl apply -k ./
     - task: cli:highlight_bg

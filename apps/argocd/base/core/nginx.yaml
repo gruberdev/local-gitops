@@ -18,10 +18,6 @@ spec:
             kind: Deployment
             name: ingress-nginx-controller
           patch: |-
-            - op: remove
-              path: /spec/template/spec/tolerations
-            - op: remove
-              path: /spec/template/spec/nodeSelector
             - op: replace
               path: /spec/strategy
               value:
@@ -32,12 +28,15 @@ spec:
                 - /nginx-ingress-controller
                 - --default-ssl-certificate=ingress-controller/tls-secret
                 - --ingress-class=nginx
+                - --validating-webhook=:8443
+                - --election-id=ingress-nginx-leader
+                - --controller-class=k8s.io/ingress-nginx
                 - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
                 - --validating-webhook=:8443
                 - --validating-webhook-certificate=/usr/local/certificates/cert
                 - --validating-webhook-key=/usr/local/certificates/key
   destination:
-    namespace: ingress-controller
+    namespace: kube-system
     name: in-cluster
   syncPolicy:
     automated:
@@ -46,18 +45,9 @@ spec:
     syncOptions:
     - Prune=true
     - ServerSideApply=true
-    - CreateNamespace=true
     retry:
       limit: 5
       backoff:
         duration: 20s
         factor: 2
         maxDuration: 15m
-  ignoreDifferences:
-  - group: ""
-    kind: Service
-    name: ingress-nginx-controller
-    namespace: ingress-controller
-    jsonPointers:
-    - /spec/ports/0/nodePort
-    - /spec/ports/1/nodePort
