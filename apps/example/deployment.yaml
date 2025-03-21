@@ -20,3 +20,10 @@ spec:
         ports:
           - name: http
             containerPort: 80
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: local-path-pvc-example

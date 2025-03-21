@@ -98,11 +98,6 @@ tasks:
   certs:
     desc: Creates and uploads local certificates to the cluster as tls secrets
     dir: config/tls
-    preconditions:
-    - sh: "which mkcert"
-      msg: "mkcert {{.PATH_ERROR}}"
-    - sh: "which kubectl"
-      msg: "kubectl {{.PATH_ERROR}}"
     cmds:
     - task: cli:clear
     - task: cli:highlight_bg
