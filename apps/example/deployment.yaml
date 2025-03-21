@@ -3,8 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment
-  annotations:
-    link.argocd.argoproj.io/external-link: https://whoami.k8s.loaclhost
 spec:
   replicas: 1
   template:
