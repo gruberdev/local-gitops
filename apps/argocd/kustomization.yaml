@@ -164,8 +164,6 @@ patches:
         type: Recreate
       template:
         spec:
-          nodeSelector:
-            kubernetes.io/hostname: controller-one
           containers:
             - name: argocd-repo-server
               resources:
