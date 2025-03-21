@@ -9,12 +9,12 @@ resources:
 - base/apps/example.yaml
 - base/core/argocd.yaml
 - github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.1/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.7/manifests/install.yaml
 
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.13.1
+  newTag: v2.14.7
 patches:
 - patch: |-
     - op: replace

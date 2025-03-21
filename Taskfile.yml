@@ -26,14 +26,13 @@ tasks:
 
   default:
     cmds:
+    - task: cluster:start
     - task: dns
     - task: templates:gen
-    - task: start
     - task: argocd:install
     - task: certs
     - task: argocd:secret
     - task: argocd:password
-    - task: argocd:bridge
     ignore_error: true
 
   explain:
