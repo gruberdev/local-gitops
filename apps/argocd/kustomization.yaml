@@ -3,15 +3,11 @@ kind: Kustomization
 
 resources:
 - base/projects
-
-- base/core/nginx.yaml
-- base/core/argocd.yaml
-- base/core/ingress.yaml
-
-- base/apps/example.yaml
-
 - base/utilities/reflector.yaml
-
+- base/core/nginx.yaml
+- base/core/ingress.yaml
+- base/apps/example.yaml
+- base/core/argocd.yaml
 - github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
 - https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.1/manifests/install.yaml
 
@@ -103,52 +99,6 @@ patches:
                 requests:
                   cpu: 50m
                   memory: 128Mi
-# - patch: |
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     metadata:
-#       name: argocd-server
-#     spec:
-#       replicas: 1
-#       strategy:
-#         type: Recreate
-#       template:
-#         spec:
-#           containers:
-#             - name: argocd-server
-#               resources:
-#                 limits:
-#                   cpu: 200m
-#                   memory: 512Mi
-#                 requests:
-#                   cpu: 200m
-#                   memory: 256Mi
-#           initContainers:
-#             - name: extension-metrics
-#               resources:
-#                 limits:
-#                   cpu: 60mm
-#                   memory: 64Mi
-#                 requests:
-#                   cpu: 60m
-#                   memory: 32Mi
-# - patch: |
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     metadata:
-#       name: argocd-notifications-controller
-#     spec:
-#       template:
-#         spec:
-#           containers:
-#             - name: argocd-notifications-controller
-#               resources:
-#                 limits:
-#                   cpu: 150m
-#                   memory: 256Mi
-#                 requests:
-#                   cpu: 50m
-#                   memory: 128Mi
 - patch: |
     apiVersion: apps/v1
     kind: Deployment
@@ -164,10 +114,10 @@ patches:
             - name: argocd-repo-server
               resources:
                 limits:
-                  memory: 128Mi
+                  memory: 256Mi
                 requests:
                   cpu: 50m
-                  memory: 128Mi
+                  memory: 256Mi
 
 patches:
 - path: overlay/argocd-svc.yaml
