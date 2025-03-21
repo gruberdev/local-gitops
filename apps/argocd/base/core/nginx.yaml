@@ -18,6 +18,10 @@ spec:
             kind: Deployment
             name: ingress-nginx-controller
           patch: |-
+            - op: remove
+              path: /spec/template/spec/tolerations
+            - op: remove
+              path: /spec/template/spec/nodeSelector
             - op: replace
               path: /spec/strategy
               value:
