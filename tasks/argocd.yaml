@@ -10,9 +10,6 @@ silent: true
 
 tasks:
   secret:
-    vars:
-      GIT_URI:
-        sh: git config --get remote.origin.url | sed -e 's/:/\//g'| sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g' | sed 's/.git$//'
     cmds:
     - |
       kubectl apply -f - << EOF
@@ -81,7 +78,6 @@ tasks:
     cmds:
     - task: cli:highlight_normal
     - echo -e "\nYour ArgoCD Admin user password is "
-    - task: reset
     - kubectl config set-context --current --namespace=argocd --cluster=k3d-demo
     - kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
     ignore_error: true

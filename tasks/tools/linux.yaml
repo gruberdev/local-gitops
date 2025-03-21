@@ -1,0 +1,107 @@
+version: '3'
+silent: true
+includes:
+  cli: ../cli.yaml
+env:
+  VAULT_ADDR: "https://vault.k8s.localhost"
+  VAULT_SKIP_VERIFY: "true"
+  HOMEBREW_NO_AUTO_UPDATE: "true"
+  HOMEBREW_NO_ENV_HINTS: "true"
+  HOMEBREW_NO_INSTALL_CLEANUP: "true"
+  HOSTCTL: 1.1.4
+
+vars:
+  INT_REGISTRY: registry.localhost
+  PATH_ERROR: is not installed or correctly configured in PATH.
+
+tasks:
+  default:
+    cmds:
+      - task: start
+    ignore_error: true
+
+  install:
+    preconditions:
+    - sh: "which git"
+      msg: "git {{.PATH_ERROR}}"
+    cmds:
+    - task: brew
+    - task: mkcert
+    - task: kustomize
+    - task: k3d
+    - task: kubectl
+    - task: jq
+    - task: vault
+    - task: hostctl
+
+  brew:
+    env:
+      NONINTERACTIVE: "1"
+    cmds:
+    - sudo echo "Testing sudo credentials"
+    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/vscode/.bashrc
+    - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    ignore_error: true
+
+  mkcert:
+    cmds:
+    - |
+      echo -e "Installing mkcert" && \
+      brew install mkcert
+    ignore_error: true
+
+  kustomize:
+    cmds:
+    - |
+      echo -e "Installing kustomize" && \
+      brew install kustomize
+
+  k3d:
+    cmds:
+    - |
+      echo -e "Installing k3d" && \
+      brew install k3d
+
+  kubectl:
+    cmds:
+    - |
+      echo -e "Installing kubectl" && \
+      brew install kubernetes-cli
+
+
+  hostctl:
+    cmds:
+    - |
+      curl -LO https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_linux_64-bit.tar.gz && \
+      tar -xvf hostctl_${HOSTCTL}_linux_64-bit.tar.gz && \
+      rm hostctl_${HOSTCTL}_linux_64-bit.tar.gz LICENSE README.md && \
+      sudo mv hostctl /usr/local/bin
+
+  start:
+    desc: Starts your local k3d cluster.
+    preconditions:
+    - sh: "which k3d"
+      msg: "k3d {{.PATH_ERROR}}"
+    summary: |
+      Creating a k3d cluster
+
+      This command ensures the cluster on k3d will
+      be created with all the correct parameters, allowing
+      for a declarative setup that requires minimal intervention
+      to work. k3d is configured to automatically create an entry
+      on your KUBECONFIG file and update it to point towards the cluster.
+
+      All commands that create resources also are specific to the cluster
+      name configured on the file ('k3d-demo'), as to avoid creating those
+      resoures on non-local clusters that may be on KUBECONFIG file as well.
+    cmds:
+    - task: cli:clear
+    - k3d cluster delete demo
+    - docker volume delete storage
+    - docker volume create storage
+    - k3d cluster create --config config/cluster/linux.yaml
+    - task: cli:highlight_normal
+    - echo -e "\nYour cluster has been created. Type 'k3d cluster list' to confirm."
+    - task: cli:reset
+    ignore_error: true

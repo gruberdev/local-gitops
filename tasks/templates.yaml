@@ -8,9 +8,6 @@ vars:
   TAG: latest
 
 env:
-  GIT_URI:
-    sh: git config --get remote.origin.url
-
 silent: true
 
 tasks:
