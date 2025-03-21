@@ -26,7 +26,7 @@
 ```bash
 - Kubernetes Version: v1.32.2-k3s1
 - ArgoCD Version: v2.14.7
-- k3d tested using v5.8.4 with v1alpha5 config file
+- k3d tested using v5.8.3 with v1alpha5 config file
 ```
 ### Avaliable Kubernetes services:
 
