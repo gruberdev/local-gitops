@@ -4,18 +4,21 @@ metadata:
   name: argocd-server-ingress
   namespace: argocd
 spec:
+  nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.k8s.localhost
-      http:
-        paths:
-        - pathType: ImplementationSpecific
-          path: "/*"   # "*" is needed. Without this, the UI Javascript and CSS will not load properly
-          backend:
-            service:
-              name: argocd-server
-              port:
-                number: 80
+  - host: argocd.k8s.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
   tls:
   - hosts:
     - argocd.k8s.localhost
