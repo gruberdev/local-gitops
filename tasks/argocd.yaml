@@ -9,6 +9,12 @@ vars:
 silent: true
 
 tasks:
+  default:
+    cmds:
+      - task: install
+      - task: password
+    ignore_error: true
+
   secret:
     cmds:
     - |
@@ -64,6 +70,7 @@ tasks:
     - kustomize build | kubectl apply -f -
     - kubectl wait deploy/argocd-server -n argocd --for condition=available --timeout=600s
     - echo ""
+    - task: repo
     ignore_error: true
 
   rm:
