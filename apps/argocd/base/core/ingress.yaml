@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   name: argocd-server-ingress
   namespace: argocd
-spec:
-  nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   ingressClassName: nginx
   rules:
