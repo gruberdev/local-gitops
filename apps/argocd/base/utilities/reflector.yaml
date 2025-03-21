@@ -13,9 +13,9 @@ spec:
       values: |
         replicaCount: 1
         image:
-          repository: docker.io/emberstack/kubernetes-reflector
+          repository: "emberstack/kubernetes-reflector"
+          tag: "9.0.322"
           pullPolicy: IfNotPresent
-        namespaceOverride: "kube-system"
         resources:
           limits:
             cpu: 100m
