@@ -30,7 +30,7 @@ spec:
               path: /spec/template/spec/containers/0/args
               value:
                 - /nginx-ingress-controller
-                - --default-ssl-certificate=ingress-controller/tls
+                - --default-ssl-certificate=ingress-controller/tls-secret
                 - --ingress-class=nginx
                 - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
                 - --validating-webhook=:8443
