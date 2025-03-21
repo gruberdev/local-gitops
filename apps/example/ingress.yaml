@@ -10,7 +10,7 @@ spec:
       paths:
       - backend:
           service:
-            name: whoami-svc
+            name: whoami
             port:
               number: 80
         path: /
