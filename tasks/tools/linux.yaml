@@ -3,12 +3,8 @@ silent: true
 includes:
   cli: ../cli.yaml
 env:
-  VAULT_ADDR: "https://vault.k8s.localhost"
-  VAULT_SKIP_VERIFY: "true"
-  HOMEBREW_NO_AUTO_UPDATE: "true"
-  HOMEBREW_NO_ENV_HINTS: "true"
-  HOMEBREW_NO_INSTALL_CLEANUP: "true"
   HOSTCTL: 1.1.4
+  TAG: "v5.8.3"
 
 vars:
   INT_REGISTRY: registry.localhost
@@ -17,66 +13,73 @@ vars:
 tasks:
   default:
     cmds:
-      - task: start
+      - task: setup
     ignore_error: true
 
-  install:
+  setup:
     preconditions:
     - sh: "which git"
       msg: "git {{.PATH_ERROR}}"
+    - sh: "which tar"
+      msg: "tar {{.PATH_ERROR}}"
     cmds:
-    - task: brew
     - task: mkcert
     - task: kustomize
     - task: k3d
     - task: kubectl
-    - task: jq
-    - task: vault
     - task: hostctl
-
-  brew:
-    env:
-      NONINTERACTIVE: "1"
-    cmds:
-    - sudo echo "Testing sudo credentials"
-    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    - (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/vscode/.bashrc
-    - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    ignore_error: true
 
   mkcert:
     cmds:
-    - |
-      echo -e "Installing mkcert" && \
-      brew install mkcert
+    - echo -e "Installing mkcert"
+    - cmd: curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+      platforms: [amd64]
+    - cmd: curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/arm64"
+      platforms: [arm64]
+    - chmod +x mkcert* && mv mkcert* mkcert
+    - task: move
+      vars: { TOOL: 'mkcert' }
     ignore_error: true
 
   kustomize:
     cmds:
     - |
       echo -e "Installing kustomize" && \
-      brew install kustomize
+      curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+    - task: move
+      vars: { TOOL: 'kustomize' }
 
   k3d:
     cmds:
     - |
       echo -e "Installing k3d" && \
-      brew install k3d
+      curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
   kubectl:
     cmds:
-    - |
-      echo -e "Installing kubectl" && \
-      brew install kubernetes-cli
+    - echo -e "Installing kubectl"
+    - cmd: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      platforms: [amd64]
+    - cmd: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+      platforms: [arm64]
+    - task: move
+      vars: { TOOL: 'kubectl' }
 
+  move:
+    prompt: Install {{.TOOL}} to /usr/local/bin using sudo?
+    cmds:
+      - sudo mv {{.TOOL}} /usr/local/bin/{{.TOOL}}
 
   hostctl:
     cmds:
-    - |
-      curl -LO https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_linux_64-bit.tar.gz && \
-      tar -xvf hostctl_${HOSTCTL}_linux_64-bit.tar.gz && \
-      rm hostctl_${HOSTCTL}_linux_64-bit.tar.gz LICENSE README.md && \
-      sudo mv hostctl /usr/local/bin
+      - cmd: |
+          curl -sL https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_linux_64-bit.tar.gz | tar -xz --no-wildcards hostctl
+        platforms: [amd64]
+      - cmd: |
+          curl -sL https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_linux_arm64.tar.gz | tar -xz --no-wildcards hostctl
+        platforms: [arm64]
+      - task: move
+        vars: { TOOL: 'hostctl' }
 
   start:
     desc: Starts your local k3d cluster.

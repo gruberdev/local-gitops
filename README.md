@@ -43,8 +43,7 @@
 >   - [Podman][podman-url] (works but [requires extra steps][podman-steps])
 > - [Task][task-url] as a more modern iteration of the Makefile utility
 > - [mkcert][mkcert-url] for creating locally based TLS certificates for your ingress proxy
-> - [kubectl][kubectl-url] | [kustomize][kustomize-url] | [helm][helm-url] to apply local commands to the cluster
-> - [jq][jq-url] to manipulate the resulting JSON files and extract the required strings
+> - [kubectl][kubectl-url] | [kustomize][kustomize-url] | [helm][helm-url] to apply local commands to the clusters
 > - [hostctl][hostctl-url] to create the local domain on your hosts file *(optional, but recommended)*
 
 ---
@@ -54,10 +53,10 @@ To list available commands, install [Task][task-installation-url] and run:
 task help
 ```
 #### Installing requirements (*optional*)
-To install the required tools automatically <sub>(Requires [brew][brew-url] for Linux/MacOS and [Chocolatey][chocolate-url] for Windows.)</sub>
+To install the required tools automatically <sub>(Requires [brew][brew-url] for MacOS and [Chocolatey][chocolate-url] for Windows.)</sub>
 
 ```sh
-task tools:install
+task tools
 ```
 
 ---
