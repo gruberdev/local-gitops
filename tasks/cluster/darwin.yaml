@@ -1,0 +1,62 @@
+version: '3'
+silent: true
+env:
+  HOSTCTL: 1.1.4
+  NONINTERACTIVE: "1"
+
+tasks:
+  default:
+    cmds:
+    - task: mkcert
+    - task: kustomize
+    - task: k3d
+    - task: kubectl
+    - task: jq
+    - task: vault
+    - task: hostctl
+
+  mkcert:
+    cmds:
+    - |
+      echo -e "Installing mkcert" && \
+      brew install mkcert && brew install nss
+    ignore_error: true
+
+  kustomize:
+    cmds:
+    - |
+      echo -e "Installing kustomize" && \
+      brew install kustomize
+
+  k3d:
+    cmds:
+    - |
+      echo -e "Installing k3d" && \
+      brew install k3d
+
+  kubectl:
+    cmds:
+    - |
+      echo -e "Installing kubectl" && \
+      brew install kubernetes-cli
+
+  jq:
+    cmds:
+    - |
+      echo -e "Installing jq" && \
+      brew install jq
+
+  hostctl:
+    cmds:
+    - |
+      echo -e "Installing hostctl" && \
+      curl -LO https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_darwin_64-bit.tar.gz && \
+      tar -xvf hostctl_${HOSTCTL}_darwin_64-bit.tar.gz && \
+      rm hostctl_${HOSTCTL}_darwin_64-bit.tar.gz LICENSE README.md && \
+      sudo mv hostctl /usr/local/bin
+
+  vault:
+    cmds:
+    - |
+      echo -e "Installing Vault CLI" && \
+      brew install hashicorp/tap/vault

@@ -1,9 +1,8 @@
 version: '3'
 silent: true
 env:
-  VAULT_ADDR: "https://vault.k8s.localhost"
-  VAULT_SKIP_VERIFY: "true"
   HOSTCTL: 1.1.4
+  TAG: "v5.8.3"
 
 tasks:
   default:
@@ -12,8 +11,6 @@ tasks:
     - task: kustomize
     - task: k3d
     - task: kubectl
-    - task: jq
-    - task: vault
     - task: hostctl
 
   mkcert:
@@ -37,11 +34,6 @@ tasks:
     - echo -e "Installing kubectl"
     - choco install kubernetes-cli
 
-  jq:
-    cmds:
-    - echo -e "Installing jq"
-    - choco install jq
-
   hostctl:
     cmds:
     - |
@@ -51,10 +43,3 @@ tasks:
       wget https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_windows_64-bit.zip &&\
       unzip hostctl_${HOSTCTL}_windows_64-bit.zip && \
       rm hostctl_${HOSTCTL}_windows_64-bit.zip LICENSE README.md
-
-  vault:
-    cmds:
-    - |
-      echo -e "Installing Vault CLI" && \
-      {{if eq OS "windows"}}choco install vault \
-      {{else}}brew tap hashicorp/tap && brew install hashicorp/tap/vault{{end}}
