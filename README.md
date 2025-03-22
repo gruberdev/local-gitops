@@ -1,15 +1,6 @@
 # Local Gitops
 
-- [Local Gitops](#local-gitops)
-    - [Project Objective](#project-objective)
-  - [Resources versioning](#resources-versioning)
-    - [Avaliable Kubernetes services:](#avaliable-kubernetes-services)
-    - [Tools required locally](#tools-required-locally)
-      - [Installing requirements (*optional*)](#installing-requirements-optional)
-    - [**Initializing the repository**](#initializing-the-repository)
-    - [In case you want to reset the environment](#in-case-you-want-to-reset-the-environment)
-
----
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/gruberdev/local-gitops)
 
 ### Project Objective
 
@@ -32,7 +23,7 @@
 
 > - [ArgoCD][argocd-url] as the main GitOps tool | **Available at [argocd.k8s.localhost][argocd-localhost]**
 > - [Example][example-url] application | **Available at [whoami.k8s.localhost][example-localhost]**
-> - Access to the cluster using [Nginx Ingress][nginx-url].
+> - Access to the cluster using [Nginx ingress controller][nginx-url].
 > - Mirror resources between namespaces using [Reflector][reflector-url].
 
 ### Tools required locally
