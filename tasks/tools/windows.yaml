@@ -1,0 +1,45 @@
+version: '3'
+silent: true
+env:
+  HOSTCTL: 1.1.4
+  TAG: "v5.8.3"
+
+tasks:
+  default:
+    cmds:
+    - task: mkcert
+    - task: kustomize
+    - task: k3d
+    - task: kubectl
+    - task: hostctl
+
+  mkcert:
+    cmds:
+    - echo -e "Installing mkcert"
+    - choco install mkcert
+    ignore_error: true
+
+  kustomize:
+    cmds:
+    - echo -e "Installing kustomize"
+    - choco install kustomize
+
+  k3d:
+    cmds:
+    - echo -e "Installing k3d"
+    - choco install k3d
+
+  kubectl:
+    cmds:
+    - echo -e "Installing kubectl"
+    - choco install kubernetes-cli
+
+  hostctl:
+    cmds:
+    - |
+      echo -e "Installing hostctl"
+      choco install wget && \
+      cd utilities && \
+      wget https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_windows_64-bit.zip &&\
+      unzip hostctl_${HOSTCTL}_windows_64-bit.zip && \
+      rm hostctl_${HOSTCTL}_windows_64-bit.zip LICENSE README.md

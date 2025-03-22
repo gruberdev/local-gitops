@@ -16,24 +16,23 @@
 > The objective of this project is to furnish a streamlined method for establishing your own local cluster, complete with necessary utilities such as an image registry, garbage collectors, ingress configuration with TLS, and monitoring tools
 >
 > The project employs k3d to build a local cluster. k3d, a lightweight version of k3s, has the capacity to run all cluster components within containers, thus offering a more efficient local simulation alternative to Minikube or similar counterparts. Further, the project installs ArgoCD atop the k3d-created cluster, leveraging this repository as a resource for executing GitOps. It utilizes the code in the apps/ directory to generate and configure cluster resources.
-> 
+>
 > Additionally, a multi-OS tool is configured to establish the DNS forwarding required for accessing cluster resources via hostnames rather than IP addresses. It employs `mkcert` to facilitate TLS/SSL-enabled requests towards your cluster ingresses, while continuing to operate exclusively on local resources.
-> 
+>
 > Although the process is designed to be fully automated, users can delve into `tasks` to comprehend its operations. Taskfiles are easy to digest and they simply illustrate the commands executed at each automation phase.
 
 ## Resources versioning
 
 ```bash
-- Kubernetes Version: v1.27.4-k3s1
-- ArgoCD Version: v2.8.0
-- k3d tested using v5.6 with v1alpha5 config file
+- Kubernetes Version: v1.32.2-k3s1
+- ArgoCD Version: v2.14.7
+- k3d tested using v5.8.3 with v1alpha5 config file
 ```
 ### Avaliable Kubernetes services:
 
 > - [ArgoCD][argocd-url] as the main GitOps tool | **Available at [argocd.k8s.localhost][argocd-localhost]**
+> - [Example][example-url] application | **Available at [whoami.k8s.localhost][example-localhost]**
 > - Access to the cluster using [Nginx Ingress][nginx-url].
-> - On-demand databases clusters with [Zalando Operator for PostgreSQL][postgres-url] | **UI available at [dbs.k8s.localhost][dbs-localhost]**
-> - Hot-Reload secrets and configmaps to pods using [Reloader][reloader-url].
 > - Mirror resources between namespaces using [Reflector][reflector-url].
 
 ### Tools required locally
@@ -44,8 +43,7 @@
 >   - [Podman][podman-url] (works but [requires extra steps][podman-steps])
 > - [Task][task-url] as a more modern iteration of the Makefile utility
 > - [mkcert][mkcert-url] for creating locally based TLS certificates for your ingress proxy
-> - [kubectl][kubectl-url] | [kustomize][kustomize-url] | [helm][helm-url] to apply local commands to the cluster
-> - [jq][jq-url] to manipulate the resulting JSON files and extract the required strings
+> - [kubectl][kubectl-url] | [kustomize][kustomize-url] | [helm][helm-url] to apply local commands to the clusters
 > - [hostctl][hostctl-url] to create the local domain on your hosts file *(optional, but recommended)*
 
 ---
@@ -55,10 +53,10 @@ To list available commands, install [Task][task-installation-url] and run:
 task help
 ```
 #### Installing requirements (*optional*)
-To install the required tools automatically <sub>(Requires [brew][brew-url] for Linux/MacOS and [Chocolatey][chocolate-url] for Windows.)</sub>
+To install the required tools automatically <sub>(Requires [brew][brew-url] for MacOS and [Chocolatey][chocolate-url] for Windows.)</sub>
 
 ```sh
-task tools:install
+task tools
 ```
 
 ---
@@ -133,8 +131,8 @@ Whenever you want to restart from scratch and create a new cluster, just type `t
 [helm-url]: https://helm.sh/docs/intro/install/
 [chocolate-url]: https://chocolatey.org/install
 [brew-url]: https://brew.sh/
+[example-url]: https://github.com/gruberdev/local-gitops/tree/main/apps/example
 
 <!--- Local URIs --->
 [argocd-localhost]: https://argocd.k8s.localhost
-[vault-localhost]: https://vault.k8s.localhost
-[dbs-localhost]: https://dbs.k8s.localhost
+[example-localhost]: https://whoami.k8s.localhost

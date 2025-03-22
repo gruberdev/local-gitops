@@ -1,3 +1,4 @@
+127.0.0.1 argocd.k8s.localhost
 127.0.0.1 k8s.localhost
 127.0.0.1 cluster.localhost
 127.0.0.1 k8s.example

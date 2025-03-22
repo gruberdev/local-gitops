@@ -8,7 +8,7 @@ kubeAPI:
   host: "k8s.localhost"
   hostIP: "127.0.0.1"
   hostPort: "6445"
-image: rancher/k3s:v1.27.4-k3s1
+image: rancher/k3s:v1.32.2-k3s1
 network: demo-net
 ports:
 - port: 80:80
@@ -41,15 +41,15 @@ volumes:
   - server:0
   - agent:*
 
-hostAliases:
-- ip: 127.0.0.1
-  hostnames:
-  - k8s.localhost
-  - app.k8s.localhost
-  - example.k8s.localhost
-  - argocd.k8s.localhost
-  - postgres.k8s.localhost
-  - dbs.k8s.localhost
+# hostAliases:
+# - ip: 127.0.0.1
+#   hostnames:
+#   - k8s.localhost
+#   - app.k8s.localhost
+#   - example.k8s.localhost
+#   - argocd.k8s.localhost
+#   - postgres.k8s.localhost
+#   - dbs.k8s.localhost
 options:
   k3d:
     wait: true
@@ -63,13 +63,6 @@ options:
       nodeFilters:
       - server:*
     - arg: --tls-san=localhost,registry.local.gd,127.0.0.1,registry.localhost,k8s.localhost,whoami.k8s.localhost
-      nodeFilters:
-      - server:*
-    - arg: --kube-proxy-arg=metrics-bind-address=0.0.0.0
-      nodeFilters:
-      - server:*
-      - agent:*
-    - arg: --kube-scheduler-arg=bind-address=0.0.0.0
       nodeFilters:
       - server:*
     - arg: --kubelet-arg=node-status-update-frequency=4s

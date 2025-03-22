@@ -1,15 +1,6 @@
 version: '3'
+
 vars:
-  CYAN: tput setaf 6
-  RED: tput setaf 1
-  YELLOW: tput setaf 3
-  GREEN: tput setaf 2
-  BLUE: tput setaf 1
-  PURPLE: tput setaf 5
-  BG_B: tput setab 0
-  BOLD: tput bold
-  RESET: tput sgr0
-  CLEAR: tput reset
   INT_REGISTRY: registry.localhost
   PATH_ERROR: is not installed or correctly configured in PATH.
 
@@ -20,88 +11,40 @@ silent: true
 includes:
   argocd: ./tasks/argocd.yaml
   templates: ./tasks/templates.yaml
-  tools: ./tasks/tools.yaml
+  tools: ./tasks/tools/{{OS}}.yaml
+  cluster: ./tasks/cluster/{{OS}}.yaml
+  cli: ./tasks/cli.yaml
 
 tasks:
-  clear:
-    cmds:
-      - sleep 0.1 && {{.CLEAR}}
-  highlight_bg:
-    cmds:
-      - |
-        sleep 0.1 && \
-        {{.CYAN}} && \
-        {{.BOLD}} && \
-        {{.BG_B}}
-  highlight_normal:
-    cmds:
-      - |
-        sleep 0.1 && \
-        {{.CYAN}} && \
-        {{.BOLD}}
-  reset:
-    cmds:
-      - |
-        sleep 0.1 && \
-        {{.RESET}}
-
   help:
     desc: Displays this message. Type 'task explain -- [command]' to have a in-depth explanation of each command
     cmds:
-      - task: highlight_bg
-      - echo -e "If you want to understand more abount a command, type task explain -- [command]"
-      - task: reset
-      - task --list
+    - task: cli:highlight_bg
+    - echo -e "If you want to understand more abount a command, type task explain -- [command]"
+    - task: cli:reset
+    - task --list
 
   default:
     cmds:
-      - task: dns
-      - task: templates:gen
-      - task: start
-      - task: argocd:install
-      - task: certs
-      - task: argocd:secret
-      - task: argocd:password
-      - task: argocd:bridge
+    - task: cluster:start
+    - task: dns
+    - task: templates:gen
+    - task: argocd:install
+    - task: certs
+    - task: argocd:secret
+    - task: argocd:password
     ignore_error: true
 
   explain:
     desc: Explains a certain Task command more in-detail
     cmds:
-      - task {{.CLI_ARGS}} --summary
-
-  start:
-    desc: Starts your local k3d cluster.
-    preconditions:
-      - sh: "which k3d"
-        msg: "k3d {{.PATH_ERROR}}"
-    summary: |
-      Creating a k3d cluster
-
-      This command ensures the cluster on k3d will
-      be created with all the correct parameters, allowing
-      for a declarative setup that requires minimal intervention
-      to work. k3d is configured to automatically create an entry
-      on your KUBECONFIG file and update it to point towards the cluster.
-
-      All commands that create resources also are specific to the cluster
-      name configured on the file ('k3d-demo'), as to avoid creating those
-      resoures on non-local clusters that may be on KUBECONFIG file as well.
-    cmds:
-      - task: clear
-      - k3d cluster delete demo
-      - k3d cluster create --config config/cluster.yaml
-      - task: highlight_normal
-      - echo -e "\nYour cluster has been created. Type 'k3d cluster list' to confirm."
-      - task: reset
-    ignore_error: true
-    interactive: true
+    - task {{.CLI_ARGS}} --summary
 
   dns:
     desc: Creates the DNS entry required for the local domain to work.
     preconditions:
-      - sh: "which hostctl"
-        msg: "hostctl {{.PATH_ERROR}}"
+    - sh: "which hostctl"
+      msg: "hostctl {{.PATH_ERROR}}"
     summary: |
       Configuring Local DNS configuration through hostctl
 
@@ -109,77 +52,72 @@ tasks:
       a cross operational system compatible way. This command should work
       on all MacOS, Windows and Linux. It adds all the '*.k8s.localhost'
       domains to your local DNS hosts file. It also makes it easy for the
-      user to reverse those changes, avoiding pollution on your hosts
+      user to verse those changes, avoiding pollution on your hosts
       (or equivalent) file.
     cmds:
-      - task: clear
-      - sleep 0.01 && {{if eq OS "windows"}}hostctl add k8s -q < config/.etchosts{{else}}sudo hostctl add k8s -q < config/.etchosts{{end}}
-      - task: highlight_normal
-      - echo -e "Added 'k8s.localhost' and related domains to your hosts file!"
-      - task: reset
+    - task: cli:clear
+    - sleep 0.01 && {{if eq OS "windows"}}hostctl add k8s -q < config/.etchosts{{else}}sudo hostctl add k8s -q < config/.etchosts{{end}}
+    - task: cli:highlight_normal
+    - echo -e "Added 'k8s.localhost' and related domains to your hosts file!"
+    - task: cli:reset
 
   repos:
-    desc: Adds and updates all the required Helm repositories locally.
     preconditions:
-      - sh: "which helm"
-        msg: "helm {{.PATH_ERROR}}"
+    - sh: "which helm"
+      msg: "helm {{.PATH_ERROR}}"
+    internal: true
     cmds:
-      - task: clear
-      - task: highlight_bg
-      - echo -e "This will add new repositories to your local Helm\n"
-      - task: reset
-      - helm repo add chaos-mesh https://charts.chaos-mesh.org
-      - helm repo add hashicorp https://helm.releases.hashicorp.com
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
-      - helm repo add nginx-stable https://helm.nginx.com/stable
-      - helm repo add hashicorp https://helm.releases.hashicorp.co
-      - helm repo add lwolf-charts http://charts.lwolf.org
-      - helm repo add emberstack https://emberstack.github.io/helm-charts
-      - helm repo add keyporttech https://keyporttech.github.io/helm-charts/
-      - helm repo add agones https://agones.dev/chart/stable
-      - helm repo add drone https://charts.drone.io
-      - helm repo add stakater https://stakater.github.io/stakater-charts
-      - helm repo add ananace-charts https://ananace.gitlab.io/charts
-      - helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
-      - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-      - task: clear
-      - echo -e "This will add new repositories to your local Helm\n"
-      - task: highlight_normal
-      - echo -e "Finished adding repositories. Updating them now.\n"
-      - task: reset
-      - helm repo update
+    - task: cli:clear
+    - task: cli:highlight_bg
+    - echo -e "This will add new repositories to your local Helm\n"
+    - task: cli:reset
+    - helm repo add chaos-mesh https://charts.chaos-mesh.org
+    - helm repo add hashicorp https://helm.releases.hashicorp.com
+    - helm repo add bitnami https://charts.bitnami.com/bitnami
+    - helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
+    - helm repo add nginx-stable https://helm.nginx.com/stable
+    - helm repo add hashicorp https://helm.releases.hashicorp.co
+    - helm repo add lwolf-charts http://charts.lwolf.org
+    - helm repo add emberstack https://emberstack.github.io/helm-charts
+    - helm repo add keyporttech https://keyporttech.github.io/helm-charts/
+    - helm repo add agones https://agones.dev/chart/stable
+    - helm repo add drone https://charts.drone.io
+    - helm repo add stakater https://stakater.github.io/stakater-charts
+    - helm repo add ananace-charts https://ananace.gitlab.io/charts
+    - helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+    - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    - task: cli:clear
+    - echo -e "This will add new repositories to your local Helm\n"
+    - task: cli:highlight_normal
+    - echo -e "Finished adding repositories. Updating them now.\n"
+    - task: cli:reset
+    - helm repo update
     ignore_error: true
 
   certs:
     desc: Creates and uploads local certificates to the cluster as tls secrets
     dir: config/tls
-    preconditions:
-      - sh: "which mkcert"
-        msg: "mkcert {{.PATH_ERROR}}"
-      - sh: "which kubectl"
-        msg: "kubectl {{.PATH_ERROR}}"
     cmds:
-      - task: clear
-      - task: highlight_bg
-      - echo -e "Creating local certificates\n"
-      - task: reset
-      - rm cert.pem key.pem base/tls-secret.yaml ca.pem 2> /dev/null
-      - mkcert -install
-      - mkcert -cert-file cert.pem -key-file key.pem -p12-file p12.pem "*.k8s.localhost" k8s.localhost "*.localhost" ::1 127.0.0.1 localhost 127.0.0.1 "*.internal.localhost" "*.local" 2> /dev/null
-      - base64 {{if eq OS "darwin"}}-b{{else}}-w{{end}} 0 cert.pem > ca.pem
-      - task: highlight_bg
-      - echo -e "Creating certificate secrets on Kubernetes for local TLS enabled by default\n"
-      - task: reset
-      - kubectl config set-context --current --namespace=kube-system --cluster=k3d-demo
-      - kubectl create secret tls tls-secret --cert=cert.pem --key=key.pem --dry-run=client -o yaml >base/tls-secret.yaml
-      - kubectl apply -k ./
-      - task: highlight_bg
-      - echo -e "\nCertificate resources have been created.\n"
-      - task: reset
+    - task: cli:clear
+    - task: cli:highlight_bg
+    - echo -e "Creating local certificates\n"
+    - task: cli:reset
+    - rm cert.pem key.pem base/tls-secret.yaml ca.pem 2> /dev/null
+    - mkcert -install
+    - mkcert -cert-file cert.pem -key-file key.pem -p12-file p12.pem "*.k8s.localhost" k8s.localhost "*.localhost" ::1 127.0.0.1 localhost 127.0.0.1 "*.internal.localhost" "*.local" 2> /dev/null
+    - base64 {{if eq OS "darwin"}}-b{{else}}-w{{end}} 0 cert.pem > ca.pem
+    - task: cli:highlight_bg
+    - echo -e "Creating certificate secrets on Kubernetes for local TLS enabled by default\n"
+    - task: cli:reset
+    - kubectl config set-context --current --namespace=kube-system --cluster=k3d-demo
+    - kubectl create secret tls tls-secret --cert=cert.pem --key=key.pem --dry-run=client -o yaml >base/tls-secret.yaml
+    - kubectl apply -k ./
+    - task: cli:highlight_bg
+    - echo -e "\nCertificate resources have been created.\n"
+    - task: cli:reset
     ignore_error: true
 
   ns:system:
     cmds:
-      - kubectl config set-context --current --namespace=kube-system --cluster=k3d-demo
+    - kubectl config set-context --current --namespace=kube-system --cluster=k3d-demo
     ignore_error: true

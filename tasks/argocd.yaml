@@ -1,47 +1,21 @@
 version: '3'
+
+includes:
+  cli: ./cli.yaml
 vars:
-  CYAN: tput setaf 6
-  RED: tput setaf 1
-  YELLOW: tput setaf 3
-  GREEN: tput setaf 2
-  BLUE: tput setaf 1
-  PURPLE: tput setaf 5
-  BG_B: tput setab 0
-  BOLD: tput bold
-  RESET: tput sgr0
-  CLEAR: tput reset
   INT_REGISTRY: registry.localhost
   PATH_ERROR: is not installed or correctly configured in PATH.
 
 silent: true
 
 tasks:
-  clear:
+  default:
     cmds:
-    - sleep 0.1 && {{.CLEAR}}
-  highlight_bg:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.CYAN}} && \
-      {{.BOLD}} && \
-      {{.BG_B}}
-  highlight_normal:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.CYAN}} && \
-      {{.BOLD}}
-  reset:
-    cmds:
-    - |
-      sleep 0.1 && \
-      {{.RESET}}
+      - task: install
+      - task: password
+    ignore_error: true
 
   secret:
-    vars:
-      GIT_URI:
-        sh: git config --get remote.origin.url | sed -e 's/:/\//g'| sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g' | sed 's/.git$//'
     cmds:
     - |
       kubectl apply -f - << EOF
@@ -76,11 +50,10 @@ tasks:
       stringData:
         type: git
         url: {{.GIT_URI}}
-        password: $GH_PASS
-        username: $GH_USER
+        # password: $GH_PASS
+        # username: $GH_USER
       EOF
     ignore_error: true
-
 
   install:
     desc: Installs ArgoCD resources manually on the local cluster
@@ -97,6 +70,7 @@ tasks:
     - kustomize build | kubectl apply -f -
     - kubectl wait deploy/argocd-server -n argocd --for condition=available --timeout=600s
     - echo ""
+    - task: repo
     ignore_error: true
 
   rm:
@@ -105,13 +79,12 @@ tasks:
     - kustomize build | kubectl delete -f -
     ignore_error: true
 
-  bridge: kubectl port-forward -n argocd svc/argocd-server 8832:80
+  bridge: kubectl port-forward -n argocd svc/argocd-server 8080:80
 
   password:
     cmds:
-    - task: highlight_normal
+    - task: cli:highlight_normal
     - echo -e "\nYour ArgoCD Admin user password is "
-    - task: reset
     - kubectl config set-context --current --namespace=argocd --cluster=k3d-demo
     - kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
     ignore_error: true

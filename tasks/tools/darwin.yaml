@@ -1,0 +1,110 @@
+version: '3'
+silent: true
+includes:
+  cli: ../cli.yaml
+env:
+  HOSTCTL: 1.1.4
+  TAG: "v5.8.3"
+
+vars:
+  INT_REGISTRY: registry.localhost
+  PATH_ERROR: is not installed or correctly configured in PATH.
+
+tasks:
+  default:
+    cmds:
+      - task: setup
+    ignore_error: true
+
+  setup:
+    preconditions:
+    - sh: "which git"
+      msg: "git {{.PATH_ERROR}}"
+    - sh: "which tar"
+      msg: "tar {{.PATH_ERROR}}"
+    cmds:
+    - task: mkcert
+    - task: kustomize
+    - task: k3d
+    - task: kubectl
+    - task: hostctl
+
+  mkcert:
+    cmds:
+    - echo -e "Installing mkcert"
+    - cmd: curl -JLO "https://dl.filippo.io/mkcert/latest?for=darwin/amd64"
+      platforms: [amd64]
+    - cmd: curl -JLO "https://dl.filippo.io/mkcert/latest?for=darwin/arm64"
+      platforms: [arm64]
+    - chmod +x mkcert* && mv mkcert* mkcert
+    - task: move
+      vars: { TOOL: 'mkcert' }
+    ignore_error: true
+
+  kustomize:
+    cmds:
+    - |
+      echo -e "Installing kustomize" && \
+      curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+    - task: move
+      vars: { TOOL: 'kustomize' }
+
+  k3d:
+    cmds:
+    - |
+      echo -e "Installing k3d" && \
+      curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+
+  kubectl:
+    cmds:
+    - echo -e "Installing kubectl"
+    - cmd: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+      platforms: [amd64]
+    - cmd: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl"
+      platforms: [arm64]
+    - task: move
+      vars: { TOOL: 'kubectl' }
+
+  move:
+    prompt: Install {{.TOOL}} to /usr/local/bin using sudo?
+    cmds:
+      - sudo mv {{.TOOL}} /usr/local/bin/{{.TOOL}}
+
+  hostctl:
+    cmds:
+      - cmd: |
+          curl -sL https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_darwin_64-bit.tar.gz | tar -xz --no-wildcards hostctl
+        platforms: [amd64]
+      - cmd: |
+          curl -sL https://github.com/guumaster/hostctl/releases/download/v$HOSTCTL/hostctl_${HOSTCTL}_darwin_arm64.tar.gz | tar -xz --no-wildcards hostctl
+        platforms: [arm64]
+      - task: move
+        vars: { TOOL: 'hostctl' }
+
+  start:
+    desc: Starts your local k3d cluster.
+    preconditions:
+    - sh: "which k3d"
+      msg: "k3d {{.PATH_ERROR}}"
+    summary: |
+      Creating a k3d cluster
+
+      This command ensures the cluster on k3d will
+      be created with all the correct parameters, allowing
+      for a declarative setup that requires minimal intervention
+      to work. k3d is configured to automatically create an entry
+      on your KUBECONFIG file and update it to point towards the cluster.
+
+      All commands that create resources also are specific to the cluster
+      name configured on the file ('k3d-demo'), as to avoid creating those
+      resoures on non-local clusters that may be on KUBECONFIG file as well.
+    cmds:
+    - task: cli:clear
+    - k3d cluster delete demo
+    - docker volume delete storage
+    - docker volume create storage
+    - k3d cluster create --config config/cluster/darwin.yaml
+    - task: cli:highlight_normal
+    - echo -e "\nYour cluster has been created. Type 'k3d cluster list' to confirm."
+    - task: cli:reset
+    ignore_error: true

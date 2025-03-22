@@ -2,35 +2,125 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- base/projects/core.yaml
-- base/projects/cluster.yaml
-- base/projects/monitoring.yaml
-- base/projects/networking.yaml
-- base/projects/apps.yaml
+- base/projects
+- base/utilities/reflector.yaml
 - base/core/nginx.yaml
-- base/core/argocd.yaml
 - base/core/ingress.yaml
 - base/apps/example.yaml
-- base/apps/template.yaml
-- base/utilities/zalando.yaml
-- base/utilities/reloader.yaml
-- base/utilities/reflector.yaml
-- base/utilities/descheduler.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.0/manifests/install.yaml
-
-components:
-- https://github.com/argoproj-labs/argocd-extensions/manifests
-
-patchesStrategicMerge:
-- overlay/argocd-svc.yaml
-- overlay/argocd-rbac.yaml
-- overlay/argocd-cm.yaml
-- overlay/argocd-cr.yaml
+- base/core/argocd.yaml
+- github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.7/manifests/install.yaml
 
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.11.3
+  newTag: v2.14.7
+patches:
+- patch: |-
+    - op: replace
+      path: "/metadata/namespace"
+      value: "monitoring"
+  target:
+    kind: ServiceMonitor
+- patch: |-
+    - op: add
+      path: "/spec/strategy"
+      value:
+        type: "Recreate"
+    - op: replace
+      path: "/spec/template/spec/serviceAccountName"
+      value: "argocd-server"
+  target:
+    kind: Deployment
+    name: argocd-server
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/args/-"
+      value: "--insecure"
+  target:
+    kind: Deployment
+    name: argocd-server
+- patch: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: argocd-notifications-controller
+    spec:
+      template:
+        spec:
+          containers:
+            - name: argocd-notifications-controller
+              resources:
+                limits:
+                  memory: 128Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+- patch: |
+    apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      name: argocd-application-controller
+    spec:
+      template:
+        spec:
+          containers:
+            - name: argocd-application-controller
+              resources:
+                limits:
+                  memory: 128Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+- patch: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: argocd-redis
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      template:
+        spec:
+          containers:
+            - name: redis
+              resources:
+                limits:
+                  memory: 128Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+          initContainers:
+            - name: secret-init
+              resources:
+                limits:
+                  memory: 128Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+- patch: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: argocd-repo-server
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      template:
+        spec:
+          containers:
+            - name: argocd-repo-server
+              resources:
+                limits:
+                  memory: 256Mi
+                requests:
+                  cpu: 50m
+                  memory: 256Mi
 
-commonAnnotations:
-  reloader.stakater.com/auto: "true"
+patches:
+- path: overlay/argocd-svc.yaml
+- path: overlay/argocd-rbac.yaml
+- path: overlay/argocd-cm.yaml
+- path: overlay/argocd-cr.yaml

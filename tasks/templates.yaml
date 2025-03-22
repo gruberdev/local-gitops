@@ -1,32 +1,19 @@
 version: '3'
+includes:
+  cli: ./cli.yaml
 vars:
-  CYAN: tput setaf 6
-  RED: tput setaf 1
-  YELLOW: tput setaf 3
-  GREEN: tput setaf 2
-  BLUE: tput setaf 1
-  PURPLE: tput setaf 5
-  BG_B: tput setab 0
-  BOLD: tput bold
-  RESET: tput sgr0
-  CLEAR: tput reset
   NAMESPACE: monitoring
   INT_REGISTRY: registry.localhost
   PATH_ERROR: is not installed or correctly configured in PATH.
   TAG: latest
 
 env:
-  GIT_URI:
-    sh: git config --get remote.origin.url
-
 silent: true
 
 tasks:
   gen:
     cmds:
     - task: argocd
-    - task: certificate
-    - task: zalando
     - task: example
 
   argocd:
@@ -37,14 +24,12 @@ tasks:
       kind: Application
       metadata:
         name: argocd
-        finalizers:
-          - resources-finalizer.argocd.argoproj.io
       spec:
         project: core
         source:
           repoURL: '$GIT_URI'
           path: apps/argocd
-          targetRevision: main
+          targetRevision: feat/upgrade
         destination:
           namespace: argocd
           name: in-cluster
@@ -52,96 +37,12 @@ tasks:
           automated:
             prune: true
             selfHeal: true
-            allowEmpty: true
           syncOptions:
-          - Validate=true
-          - CreateNamespace=true
-          - PrunePropagationPolicy=foreground
-          - PruneLast=true
-          - ApplyOutOfSyncOnly=false
-          - Prune=true
+            - Prune=true
+            - ServerSideApply=true
+            - CreateNamespace=true
           retry:
-            limit: -1
-            backoff:
-              duration: 20s
-              factor: 2
-              maxDuration: 15m
-      EOF
-    ignore_error: true
-
-  certificate:
-    cmds:
-    - |
-      kubectl apply -f - << EOF
-      apiVersion: argoproj.io/v1alpha1
-      kind: Application
-      metadata:
-        name: argocd
-        finalizers:
-          - resources-finalizer.argocd.argoproj.io
-      spec:
-        project: core
-        source:
-          repoURL: '$GIT_URI'
-          path: apps/argocd
-          targetRevision: main
-        destination:
-          namespace: argocd
-          name: in-cluster
-        syncPolicy:
-          automated:
-            prune: true
-            selfHeal: true
-            allowEmpty: true
-          syncOptions:
-          - Validate=true
-          - CreateNamespace=false
-          - PrunePropagationPolicy=foreground
-          - PruneLast=true
-          - ApplyOutOfSyncOnly=false
-          - Prune=true
-          retry:
-            limit: -1
-            backoff:
-              duration: 20s
-              factor: 2
-              maxDuration: 15m
-      EOF
-    ignore_error: true
-
-  zalando:
-    cmds:
-    - |
-      kubectl apply -f - << EOF
-      apiVersion: argoproj.io/v1alpha1
-      kind: Application
-      metadata:
-        name: postgres
-        finalizers:
-          - resources-finalizer.argocd.argoproj.io
-      spec:
-        project: cluster
-        source:
-          repoURL: '$GIT_URI'
-          path: apps/databases/zalando
-          targetRevision: main
-        destination:
-          namespace: databases
-          name: in-cluster
-        syncPolicy:
-          automated:
-            prune: true
-            selfHeal: true
-            allowEmpty: true
-          syncOptions:
-          - Validate=false
-          - CreateNamespace=true
-          - PrunePropagationPolicy=foreground
-          - PruneLast=true
-          - ApplyOutOfSyncOnly=false
-          - Prune=true
-          retry:
-            limit: -1
+            limit: 5
             backoff:
               duration: 20s
               factor: 2
@@ -157,14 +58,13 @@ tasks:
       kind: Application
       metadata:
         name: example-app
-        finalizers:
-          - resources-finalizer.argocd.argoproj.io
+        namespace: argocd
       spec:
         project: apps
         source:
           repoURL: '$GIT_URI'
           path: apps/example
-          targetRevision: main
+          targetRevision: feat/upgrade
         destination:
           namespace: example
           name: in-cluster
@@ -172,16 +72,12 @@ tasks:
           automated:
             prune: true
             selfHeal: true
-            allowEmpty: true
           syncOptions:
-          - Validate=true
-          - CreateNamespace=true
-          - PrunePropagationPolicy=foreground
-          - PruneLast=true
-          - ApplyOutOfSyncOnly=false
-          - Prune=true
+            - Prune=true
+            - ServerSideApply=true
+            - CreateNamespace=true
           retry:
-            limit: -1
+            limit: 5
             backoff:
               duration: 20s
               factor: 2
