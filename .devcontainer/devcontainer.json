@@ -1,5 +1,5 @@
 {
-	"name": "Docker in Docker",
+	"name": "Default",
 	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
@@ -18,10 +18,27 @@
 				"matt-rudge.auto-open-preview-panel",
 				"bierner.markdown-preview-github-styles",
 				"Phu1237.vs-browser",
-				"sandertenbrinke.readme-auto-open"
+				"sandertenbrinke.readme-auto-open",
+				"usernamehw.indent-one-space",
+				"compulim.indent4to2",
+				"shardulm94.trailing-spaces"
 			]
 		}
 	},
-	"forwardPorts": ["8080:8080"],
+	"forwardPorts": [8080, 8081, 6445],
+	"portsAttributes": {
+	  "8080": {
+		"label": "ArgoCD UI",
+		"protocol": "http"
+	  },
+	  "8083": {
+		"label": "Example deployment",
+		"protocol": "http"
+	  },
+	  "6445": {
+		"label": "Kube API",
+		"protocol": "https"
+	  }
+	},
  	"postCreateCommand": "task -y postcreate"
 }
