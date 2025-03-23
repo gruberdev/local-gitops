@@ -20,10 +20,12 @@
 				"matt-rudge.auto-open-preview-panel",
 				"bierner.markdown-preview-github-styles",
 				"Phu1237.vs-browser",
+				"inercia.vscode-k3d",
 				"sandertenbrinke.readme-auto-open",
 				"usernamehw.indent-one-space",
 				"compulim.indent4to2",
-				"shardulm94.trailing-spaces"
+				"shardulm94.trailing-spaces",
+				"tommasov.hosts"
 			]
 		}
 	},
@@ -44,4 +46,3 @@
 	},
  	"postCreateCommand": "task -y postcreate"
 }
-	
