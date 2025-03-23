@@ -54,3 +54,4 @@ apps/kwatch/*
 apps/argocd/base/secrets/*.yaml
 storage/*
 !storage/.gitkeep
+!.vscode/settings.json

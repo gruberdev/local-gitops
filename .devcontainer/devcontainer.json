@@ -29,7 +29,7 @@
 	"portsAttributes": {
 	  "8080": {
 		"label": "ArgoCD UI",
-		"protocol": "http"
+		"protocol": "https"
 	  },
 	  "8083": {
 		"label": "Example deployment",

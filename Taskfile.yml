@@ -4,7 +4,7 @@ vars:
   INT_REGISTRY: registry.localhost
   PATH_ERROR: is not installed or correctly configured in PATH.
 
-dotenv: ['.env']
+dotenv: [ '.env' ]
 
 silent: true
 
@@ -28,6 +28,7 @@ tasks:
     cmds:
     - task: cluster:start
     - task: dns
+    - task: ns:system
     - task: argocd:install
     - task: certs
     - task: templates:gen
@@ -36,16 +37,38 @@ tasks:
     - task: argocd:password
     ignore_error: true
 
+  fw:
+    deps: [ns:system]
+    vars:
+      ARGOCD_POD:
+        sh: "kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}'"
+    cmds:
+      - task: cli:clear
+      - kubectl port-forward {{.ARGOCD_POD}} -n argocd 8082:8080
+
+  login:
+    cmds:
+      - argocd login localhost:8082 --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) --insecure
+
+  sync:
+    deps: [login]
+    desc: Sync all applications in ArgoCD
+    cmds:
+    - |
+      for app in $(argocd app list -o name); do
+        echo "Syncing $app"
+        argocd app sync $app --prune
+      done
+
   postcreate:
     cmds:
-      - task: tools
-      - task: default
+    - task: tools
     ignore_error: true
 
   explain:
     desc: Explains a certain Task command more in-detail
     cmds:
-    - task {{.CLI_ARGS}} --summary
+      - task {{.CLI_ARGS}} --summary
 
   dns:
     desc: Creates the DNS entry required for the local domain to work.
