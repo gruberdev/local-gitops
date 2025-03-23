@@ -2,22 +2,20 @@
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/gruberdev/local-gitops)
 
-### Project Objective
+### Project goal
 
-> The objective of this project is to furnish a streamlined method for establishing your own local cluster, complete with necessary utilities such as an image registry, garbage collectors, ingress configuration with TLS, and monitoring tools
+> This repo was created to give operators a practical way to spin up a local Kubernetes cluster using [k3d][k3d-url], which runs k3s in containers - a lightweight version of the standard Kubernetes. You get all the essentials: a private image registry, a GitOps repository and a TLS-secured ingress and [it is faster to iterate environments than using Minikube][k3d-benchs].
 >
-> The project employs k3d to build a local cluster. k3d, a lightweight version of k3s, has the capacity to run all cluster components within containers, thus offering a more efficient local simulation alternative to Minikube or similar counterparts. Further, the project installs ArgoCD atop the k3d-created cluster, leveraging this repository as a resource for executing GitOps. It utilizes the code in the apps/ directory to generate and configure cluster resources.
+> The setup uses ArgoCD for GitOps, pulling configurations from the apps directory to manage your resources. For convenience, there's local DNS forwarding so you can access everything by hostname, and mkcert handles TLS certificates automatically to your `localhost`-based domains.
 >
-> Additionally, a multi-OS tool is configured to establish the DNS forwarding required for accessing cluster resources via hostnames rather than IP addresses. It employs `mkcert` to facilitate TLS/SSL-enabled requests towards your cluster ingresses, while continuing to operate exclusively on local resources.
->
-> Although the process is designed to be fully automated, users can delve into `tasks` to comprehend its operations. Taskfiles are easy to digest and they simply illustrate the commands executed at each automation phase.
+> [The repository is automated through Taskfiles][tasks-internal], so deployment is straightforward, but you can still dig into individual tasks if you want to understand what's happening under the hood.
 
-## Resources versioning
+## Components current versioning
 
 ```bash
-- Kubernetes Version: v1.32.2-k3s1
-- ArgoCD Version: v2.14.7
-- k3d tested using v5.8.3 with v1alpha5 config file
+ Kubernetes Version: v1.32.2-k3s1
+ ArgoCD Version: v2.14.7
+ k3d tested using v5.8.3 v1alpha5 config file
 ```
 ### Avaliable Kubernetes services:
 
@@ -26,15 +24,15 @@
 > - Access to the cluster using [Nginx ingress controller][nginx-url].
 > - Mirror resources between namespaces using [Reflector][reflector-url].
 
-### Tools required locally
+ ### Tools required on the host system
 
 > - [k3d][k3d-url] running atop of either (pick one):
 >   - [Rancher Desktop **(Recommended)**][rancher-url]
 >   - [Docker for Desktop][docker-url]
->   - [Podman][podman-url] (works but [requires extra steps][podman-steps])
+>   - [Podman][podman-url] <sub>(works but [requires extra steps][podman-steps])</sub>
 > - [Task][task-url] as a more modern iteration of the Makefile utility
-> - [mkcert][mkcert-url] for creating locally based TLS certificates for your ingress proxy
-> - [kubectl][kubectl-url] | [kustomize][kustomize-url] | [helm][helm-url] to apply local commands to the clusters
+> - [mkcert][mkcert-url] to create local TLS certificates
+> - [kubectl][kubectl-url] | [kustomize][kustomize-url] | [helm][helm-url] to apply local commands to the cluster
 > - [hostctl][hostctl-url] to create the local domain on your hosts file *(optional, but recommended)*
 
 ---
@@ -68,17 +66,19 @@ task tools
 > ```sh
 >  make
 >  ```
->  which will install the `task` binary for you and execute the command to run this repository's project by itself. <sub>(It might require **sudo**, please read the commands being executed before doing anything with elevated permissions on your work environment.)</sub>
+>  which will install the `task` binary for you and execute the command to run this repository's project by itself.
+>
+><sub>(It might require **sudo**, please read the commands being executed before doing anything with elevated permissions on your work environment.)</sub>
 
-### Where cluster resources are located
+### Where cluster resources are located?
 
 > - All PVCs files are configured to be stored in the repository [`storage/`][storage-uri] folder. In case you want backup your environment, simply copy these files to another location, and transfer them back when needed.
 > - Local SSL/TLS certificates will be stored under the [`config/tls/`][tls-uri] folder. All of them are a part of the `.gitignore` file, in order to avoid being commited to your repository once created.
 
 
-### In case you want to reset the environment
+### Can I reset the environment?
 
-Whenever you want to restart from scratch and create a new cluster, just type `task` again.
+> Whenever you want to restart from scratch and create a new cluster, just type `task` again. This process will destroy the previous cluster and create a new from scratch.
 
 <!---
 > - Metrics monitoring with [Prometheus's Stack][prometheus-url] (Also includes [Grafana][grafana-url])
@@ -123,6 +123,11 @@ Whenever you want to restart from scratch and create a new cluster, just type `t
 [chocolate-url]: https://chocolatey.org/install
 [brew-url]: https://brew.sh/
 [example-url]: https://github.com/gruberdev/local-gitops/tree/main/apps/example
+
+
+<!--- Internal Git URIs -->
+[tasks-internal]: https://github.com/gruberdev/local-gitops/tree/main/tasks
+[k3d-benchs]: https://minikube.sigs.k8s.io/docs/benchmarks/imagebuild/minikubevsothers/
 
 <!--- Local URIs --->
 [argocd-localhost]: https://argocd.k8s.localhost
