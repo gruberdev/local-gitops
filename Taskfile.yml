@@ -3,6 +3,7 @@ version: '3'
 vars:
   INT_REGISTRY: registry.localhost
   PATH_ERROR: is not installed or correctly configured in PATH.
+  K8S_VERSION: "1.32.3"
 
 dotenv: [ '.env' ]
 
