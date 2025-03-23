@@ -7,7 +7,7 @@ spec:
   source:
     repoURL: 'https://github.com/gruberdev/local-gitops.git'
     path: apps/template
-    targetRevision: feat/upgrade
+    targetRevision: main
   destination:
     namespace: development
     name: in-cluster
