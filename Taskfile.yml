@@ -10,7 +10,6 @@ silent: true
 
 includes:
   argocd: ./tasks/argocd.yaml
-  templates: ./tasks/templates.yaml
   tools: ./tasks/tools/{{OS}}.yaml
   cluster: ./tasks/cluster/{{OS}}.yaml
   cli: ./tasks/cli.yaml
