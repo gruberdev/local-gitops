@@ -7,8 +7,12 @@
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
 		"ghcr.io/devcontainers-contrib/features/argo-cd:1": {},
 		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
+		"ghcr.io/dhoeric/features/k9s:1": {},
+		"ghcr.io/natescherer/devcontainers-custom-features/k9s:1": {},
 		"ghcr.io/rio/features/k3d:1": {},
-		"ghcr.io/devcontainers-contrib/features/wget-apt-get:1": {}
+		"ghcr.io/devcontainers-contrib/features/wget-apt-get:1": {},
+		"ghcr.io/devcontainers-extra/features/curl-apt-get:1": {},
+		"ghcr.io/devcontainers-extra/features/kubectx-kubens:1": {}
 	},
 	"customizations": {
 		"vscode": {

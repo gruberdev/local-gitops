@@ -22,6 +22,8 @@ tasks:
       msg: "git {{.PATH_ERROR}}"
     - sh: "which tar"
       msg: "tar {{.PATH_ERROR}}"
+    - sh: "which sudo"
+      msg: "sudo {{.PATH_ERROR}}"
     cmds:
     - task: mkcert
     - task: kustomize
@@ -68,6 +70,7 @@ tasks:
   move:
     prompt: Install {{.TOOL}} to /usr/local/bin using sudo?
     cmds:
+      - sudo chmod +x {{.TOOL}}
       - sudo mv {{.TOOL}} /usr/local/bin/{{.TOOL}}
 
   hostctl:
