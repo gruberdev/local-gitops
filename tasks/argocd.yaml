@@ -50,8 +50,6 @@ tasks:
       stringData:
         type: git
         url: {{.GIT_URI}}
-        # password: $GH_PASS
-        # username: $GH_USER
       EOF
     ignore_error: true
 

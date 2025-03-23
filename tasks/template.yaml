@@ -1,0 +1,86 @@
+version: '3'
+includes:
+  cli: ./cli.yaml
+vars:
+  NAMESPACE: monitoring
+  INT_REGISTRY: registry.localhost
+  PATH_ERROR: is not installed or correctly configured in PATH.
+  TAG: latest
+
+env:
+silent: true
+
+tasks:
+  gen:
+    cmds:
+    - task: argocd
+    - task: example
+
+  argocd:
+    cmds:
+    - |
+      kubectl apply -f - << EOF
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: argocd
+      spec:
+        project: core
+        source:
+          repoURL: '$GIT_URI'
+          path: apps/argocd
+          targetRevision: feat/upgrade
+        destination:
+          namespace: argocd
+          name: in-cluster
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+          syncOptions:
+            - Prune=true
+            - ServerSideApply=true
+            - CreateNamespace=true
+          retry:
+            limit: 5
+            backoff:
+              duration: 20s
+              factor: 2
+              maxDuration: 15m
+      EOF
+    ignore_error: true
+
+  example:
+    cmds:
+    - |
+      kubectl apply -f - << EOF
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: example-app
+        namespace: argocd
+      spec:
+        project: apps
+        source:
+          repoURL: '$GIT_URI'
+          path: apps/example
+          targetRevision: feat/upgrade
+        destination:
+          namespace: example
+          name: in-cluster
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+          syncOptions:
+            - Prune=true
+            - ServerSideApply=true
+            - CreateNamespace=true
+          retry:
+            limit: 5
+            backoff:
+              duration: 20s
+              factor: 2
+              maxDuration: 15m
+      EOF
+    ignore_error: true

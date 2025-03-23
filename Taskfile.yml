@@ -13,6 +13,7 @@ includes:
   tools: ./tasks/tools/{{OS}}.yaml
   cluster: ./tasks/cluster/{{OS}}.yaml
   cli: ./tasks/cli.yaml
+  templates: ./tasks/templates.yaml
 
 tasks:
   help:
@@ -27,10 +28,10 @@ tasks:
     cmds:
     - task: cluster:start
     - task: dns
-    - task: templates:gen
     - task: argocd:install
     - task: certs
     - task: argocd:secret
+    - task: argocd:repo
     - task: argocd:password
     ignore_error: true
 
@@ -59,39 +60,6 @@ tasks:
     - task: cli:highlight_normal
     - echo -e "Added 'k8s.localhost' and related domains to your hosts file!"
     - task: cli:reset
-
-  repos:
-    preconditions:
-    - sh: "which helm"
-      msg: "helm {{.PATH_ERROR}}"
-    internal: true
-    cmds:
-    - task: cli:clear
-    - task: cli:highlight_bg
-    - echo -e "This will add new repositories to your local Helm\n"
-    - task: cli:reset
-    - helm repo add chaos-mesh https://charts.chaos-mesh.org
-    - helm repo add hashicorp https://helm.releases.hashicorp.com
-    - helm repo add bitnami https://charts.bitnami.com/bitnami
-    - helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
-    - helm repo add nginx-stable https://helm.nginx.com/stable
-    - helm repo add hashicorp https://helm.releases.hashicorp.co
-    - helm repo add lwolf-charts http://charts.lwolf.org
-    - helm repo add emberstack https://emberstack.github.io/helm-charts
-    - helm repo add keyporttech https://keyporttech.github.io/helm-charts/
-    - helm repo add agones https://agones.dev/chart/stable
-    - helm repo add drone https://charts.drone.io
-    - helm repo add stakater https://stakater.github.io/stakater-charts
-    - helm repo add ananace-charts https://ananace.gitlab.io/charts
-    - helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
-    - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-    - task: cli:clear
-    - echo -e "This will add new repositories to your local Helm\n"
-    - task: cli:highlight_normal
-    - echo -e "Finished adding repositories. Updating them now.\n"
-    - task: cli:reset
-    - helm repo update
-    ignore_error: true
 
   certs:
     desc: Creates and uploads local certificates to the cluster as tls secrets
