@@ -1,10 +1,34 @@
 {
   "yaml.schemas": {
-  "https://taskfile.dev/schema.json": [
-    "Taskfile.yml",
-    "Taskfile.yaml",
-    "tasks/*.yaml",
-    "tasks/*.yml"
-  ]
+    "https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/crds/application-crd.yaml": [
+      "**/argocd/base/apps/*.yaml",
+      "**/argocd/base/core/*.yaml",
+      "**/argocd/*application*.yaml",
+      "apps/argocd/base/apps/*.yaml"
+    ],
+    "https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/crds/appproject-crd.yaml": [
+      "**/argocd/base/projects/*.yaml",
+      "apps/argocd/base/projects/*.yaml"
+    ],
+    "https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/crds/applicationset-crd.yaml": [
+      "**/argocd/*applicationset*.yaml",
+      "**/argocd/applicationsets/*.yaml"
+    ],
+    "https://taskfile.dev/schema.json": [
+      "Taskfile.yml",
+      "Taskfile.yaml",
+      "**/.tasks/*.yaml",
+      "**/.tasks/**/*.yaml",
+      "file:///c%3A/Users/gruber/projects/local-gitops/.tasks/tools/darwin.yaml"
+    ],
+    "https://json.schemastore.org/github-action.json": [
+      ".github/workflows/*.yml",
+      ".github/workflows/*.yaml"
+    ],
+    "https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/v3/apis__networking.k8s.io__v1_openapi.json": [
+      "**/ingress.yaml",
+      "apps/argocd/base/core/ingress.yaml",
+      "apps/example/ingress.yaml"
+    ]
   }
 }
