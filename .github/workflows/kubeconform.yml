@@ -66,7 +66,7 @@ jobs:
           find . -maxdepth 15 -name statefulset.yaml -exec kubeconform --verbose -exit-on-error -ignore-missing-schemas -kubernetes-version "1.26.0" -schema-location default {} \;
 
     - name: Validate new configMaps or Secrets
-      id: validate-configs
+      id: validate-configs-cm
       uses: mathiasvr/command-output@v1
       if: steps.changed-configs.outputs.any_changed == 'true'
       with:
@@ -75,7 +75,7 @@ jobs:
           find . -maxdepth 15 -name secret.yaml -exec kubeconform --verbose -exit-on-error -ignore-missing-schemas -kubernetes-version "1.26.0" -schema-location default {} \;
 
     - name: Validate new Permissions and RBAC resources
-      id: validate-configs
+      id: validate-configs-rbac
       uses: mathiasvr/command-output@v1
       if: steps.changed-rbac.outputs.any_changed == 'true'
       with:
