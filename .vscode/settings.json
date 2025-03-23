@@ -1,0 +1,10 @@
+{
+  "yaml.schemas": {
+  "https://taskfile.dev/schema.json": [
+    "Taskfile.yml",
+    "Taskfile.yaml",
+    "tasks/*.yaml",
+    "tasks/*.yml"
+  ]
+  }
+}
