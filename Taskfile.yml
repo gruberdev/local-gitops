@@ -36,6 +36,12 @@ tasks:
     - task: argocd:password
     ignore_error: true
 
+  postcreate:
+    cmds:
+      - task: tools
+      - task: default
+    ignore_error: true
+
   explain:
     desc: Explains a certain Task command more in-detail
     cmds:

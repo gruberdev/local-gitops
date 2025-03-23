@@ -17,10 +17,11 @@
 				"kennylong.kubernetes-yaml-formatter",
 				"matt-rudge.auto-open-preview-panel",
 				"bierner.markdown-preview-github-styles",
-				"Phu1237.vs-browser"
+				"Phu1237.vs-browser",
+				"sandertenbrinke.readme-auto-open"
 			]
 		}
 	},
 	"forwardPorts": ["8080:8080"],
- 	"postCreateCommand": "task -y tools"
+ 	"postCreateCommand": "task -y postcreate"
 }
