@@ -13,7 +13,7 @@ includes:
   tools: ./tasks/tools/{{OS}}.yaml
   cluster: ./tasks/cluster/{{OS}}.yaml
   cli: ./tasks/cli.yaml
-  templates: ./tasks/templates.yaml
+  templates: ./tasks/template.yaml
 
 tasks:
   help:
@@ -30,6 +30,7 @@ tasks:
     - task: dns
     - task: argocd:install
     - task: certs
+    - task: templates:gen
     - task: argocd:secret
     - task: argocd:repo
     - task: argocd:password
