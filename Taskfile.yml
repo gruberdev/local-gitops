@@ -9,11 +9,11 @@ dotenv: [ '.env' ]
 silent: true
 
 includes:
-  argocd: ./tasks/argocd.yaml
-  tools: ./tasks/tools/{{OS}}.yaml
-  cluster: ./tasks/cluster/{{OS}}.yaml
-  cli: ./tasks/cli.yaml
-  templates: ./tasks/template.yaml
+  argocd: ./.tasks/argocd.yaml
+  tools: ./.tasks/tools/{{OS}}.yaml
+  cluster: ./.tasks/cluster/{{OS}}.yaml
+  cli: ./.tasks/cli.yaml
+  templates: ./.tasks/template.yaml
 
 tasks:
   help:
@@ -38,20 +38,20 @@ tasks:
     ignore_error: true
 
   fw:
-    deps: [ns:system]
+    deps: [ ns:system ]
     vars:
       ARGOCD_POD:
         sh: "kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}'"
     cmds:
-      - task: cli:clear
-      - kubectl port-forward {{.ARGOCD_POD}} -n argocd 8082:8080
+    - task: cli:clear
+    - kubectl port-forward {{.ARGOCD_POD}} -n argocd 8082:8080
 
   login:
     cmds:
-      - argocd login localhost:8082 --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) --insecure
+    - argocd login localhost:8082 --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) --insecure
 
   sync:
-    deps: [login]
+    deps: [ login ]
     desc: Sync all applications in ArgoCD
     cmds:
     - |
@@ -68,7 +68,29 @@ tasks:
   explain:
     desc: Explains a certain Task command more in-detail
     cmds:
-      - task {{.CLI_ARGS}} --summary
+    - task {{.CLI_ARGS}} --summary
+
+  lint:
+    desc: Performs lint testing on the YAML files in the repository using the yamllint tool to ensure proper formatting and syntax.
+    preconditions:
+    - sh: "which yamllint"
+      msg: "yamllint {{.PATH_ERROR}}"
+    cmds:
+    - yamllint -c ./.yamllint .
+
+  validate:
+    preconditions:
+    - sh: "which kubeconform"
+      msg: "kubeconform {{.PATH_ERROR}}"
+    desc: Validates your Yaml objects in the repository using Kubeconform
+    cmds:
+    - |
+      objectTypes=("svc" "deployment" "*secret" "cm" "pvc" "pv" "role" "sa" "cr" "rb");
+      for obj in "${objectTypes[@]}"; do
+        echo -e "\nValidating ${obj^} object files";
+        find . -maxdepth 20 -name ${obj}.yaml -exec kubeconform -summary -exit-on-error -ignore-missing-schemas -kubernetes-version "{{.K8S_VERSION}}" -schema-location default {} \;
+      done
+    silent: true
 
   dns:
     desc: Creates the DNS entry required for the local domain to work.
