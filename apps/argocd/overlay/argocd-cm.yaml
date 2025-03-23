@@ -8,3 +8,14 @@ metadata:
 data:
   statusbadge.enabled: "true"
   exec.enabled: "true"
+  ui.bannercontent: "ArgoCD instance created using local-gitops repository"
+  ui.bannerurl: "https://github.com/gruberdev/local-gitops"
+  ui.bannerpermanent: "false"
+  configManagementPlugins: |
+    - name: kustomized-helm
+      init:
+        command: ["/bin/sh", "-c"]
+        args: ["helm dependency build"]
+      generate:
+        command: ["/bin/sh", "-c"]
+        args: ["helm template . --name-template $ARGOCD_APP_NAME --namespace $ARGOCD_APP_NAMESPACE --kube-version $KUBE_VERSION > all.yaml && kustomize build"]
