@@ -26,12 +26,10 @@ override.tf.json
 
 .terraformrc
 terraform.rc
-config/tls/base/tls-secret.yaml
-.vscode
-.vscode/*
-!.vscode/settings.json
+config/tls/base/tls-secret.yam
 !.vscode/tasks.json
 !.vscode/launch.json
+!.vscode/extensions.json
 !.vscode/extensions.json
 *.code-workspace
 .terraform.lock.hcl

@@ -10,7 +10,7 @@
 >
 > [The repository is automated through Taskfiles][tasks-internal], so deployment is straightforward, but you can still dig into individual tasks if you want to understand what's happening under the hood.
 
-## Components current versioning
+## Current components versioning
 
 ```bash
  Kubernetes Version: v1.32.2-k3s1
@@ -76,7 +76,7 @@ task tools
 > - Local SSL/TLS certificates will be stored under the [`config/tls/`][tls-uri] folder. All of them are a part of the `.gitignore` file, in order to avoid being commited to your repository once created.
 
 
-### Can I reset the environment?
+### How do I reset the environment?
 
 > Whenever you want to restart from scratch and create a new cluster, just type `task` again. This process will destroy the previous cluster and create a new from scratch.
 

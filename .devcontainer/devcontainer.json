@@ -8,7 +8,9 @@
 		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
 		"ghcr.io/rio/features/k3d:1": {},
 		"ghcr.io/devcontainers-contrib/features/wget-apt-get:1": {},
-		"ghcr.io/devcontainers-extra/features/kubectx-kubens:1": {}
+		"ghcr.io/devcontainers-extra/features/kubectx-kubens:1": {},
+		"ghcr.io/devcontainers-extra/features/yamllint:2": {},
+		"ghcr.io/gickis/devcontainer-features/kubeconform:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -18,10 +20,12 @@
 				"matt-rudge.auto-open-preview-panel",
 				"bierner.markdown-preview-github-styles",
 				"Phu1237.vs-browser",
+				"inercia.vscode-k3d",
 				"sandertenbrinke.readme-auto-open",
 				"usernamehw.indent-one-space",
 				"compulim.indent4to2",
-				"shardulm94.trailing-spaces"
+				"shardulm94.trailing-spaces",
+				"tommasov.hosts"
 			]
 		}
 	},

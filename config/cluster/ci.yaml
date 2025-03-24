@@ -1,0 +1,47 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+servers: 1
+agents: 2
+metadata:
+  name: demo
+kubeAPI:
+  host: "k3dsvc"
+  hostIP: "127.0.0.1"
+  hostPort: "6445"
+image: rancher/k3s:v1.32.2-k3s1
+network: demo-net
+registries:
+  create:
+    image: ligfx/k3d-registry-dockerd:v0.1
+    proxy:
+      remoteURL: "*"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+ports:
+- port: 8080:80
+  nodeFilters:
+  - loadbalancer
+- port: 4443:443
+  nodeFilters:
+  - loadbalancer
+options:
+  k3d:
+    wait: true
+    timeout: "360s"
+    loadbalancer:
+      configOverrides:
+      - settings.workerConnections=2048
+  k3s:
+    extraArgs:
+    - arg: --disable=traefik
+      nodeFilters:
+      - server:*
+    - arg: --tls-san=localhost,registry.local.gd,127.0.0.1,registry.localhost,k8s.localhost,whoami.k8s.localhost,k3dsvc
+      nodeFilters:
+      - server:*
+    - arg: --kubelet-arg=node-status-update-frequency=4s
+      nodeFilters:
+      - server:*
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
