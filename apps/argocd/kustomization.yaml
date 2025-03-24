@@ -9,7 +9,8 @@ resources:
 - base/apps/example.yaml
 - base/core/argocd.yaml
 - github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.7/manifests/install.yaml
+- github.com/argoproj/argo-rollouts/manifests/cluster-install?ref=v1.8.2
+- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.7
 
 namespace: argocd
 images:
@@ -119,7 +120,6 @@ patches:
                   cpu: 50m
                   memory: 256Mi
 
-patches:
 - path: overlay/argocd-svc.yaml
 - path: overlay/argocd-rbac.yaml
 - path: overlay/argocd-cm.yaml
