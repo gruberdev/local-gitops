@@ -1,0 +1,17 @@
+name: yamllinter
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  yaml-linter:
+    name: Yaml Linter
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: yaml-lint
+      uses: ibiqlik/action-yamllint@v3
+      with:
+        config_file: .yamllint
+    - run: echo ${{ steps.yaml-lint.outputs.logfile }}

@@ -11,8 +11,8 @@ silent: true
 tasks:
   default:
     cmds:
-      - task: install
-      - task: password
+    - task: install
+    - task: password
     ignore_error: true
 
   secret:
@@ -34,9 +34,6 @@ tasks:
     ignore_error: true
 
   repo:
-    vars:
-      GIT_URI:
-        sh: git config --get remote.origin.url | sed -e 's/:/\//g'| sed -e 's/ssh\/\/\///g'| sed -e 's/git@/https:\/\//g' | sed 's/.git$//'
     cmds:
     - |
       kubectl apply -f - << EOF
@@ -49,7 +46,7 @@ tasks:
           argocd.argoproj.io/secret-type: repository
       stringData:
         type: git
-        url: {{.GIT_URI}}
+        url: https://github.com/gruberdev/local-gitops
       EOF
     ignore_error: true
 
