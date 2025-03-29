@@ -5,7 +5,7 @@ vars:
   PATH_ERROR: is not installed or correctly configured in PATH.
   K8S_VERSION: "1.32.3"
 
-dotenv: [ '.env' ]
+dotenv: ['.env']
 
 silent: true
 
@@ -39,7 +39,7 @@ tasks:
     ignore_error: true
 
   fw:
-    deps: [ ns:system ]
+    deps: [ns:system]
     vars:
       ARGOCD_POD:
         sh: "kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}'"
@@ -52,7 +52,7 @@ tasks:
     - argocd login localhost:8082 --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) --insecure
 
   sync:
-    deps: [ login ]
+    deps: [login]
     desc: Sync all applications in ArgoCD
     cmds:
     - |
