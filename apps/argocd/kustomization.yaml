@@ -15,7 +15,7 @@ resources:
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.14.7
+  newTag: v2.14.8
 patches:
 - patch: |-
     - op: replace
