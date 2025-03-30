@@ -2,8 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: core
   source:
@@ -20,9 +18,8 @@ spec:
     syncOptions:
     - Prune=true
     - ServerSideApply=true
-    - CreateNamespace=true
     retry:
-      limit: 5
+      limit: 10
       backoff:
         duration: 20s
         factor: 2

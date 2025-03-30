@@ -13,6 +13,7 @@ spec:
           image: quay.io/argoprojlabs/argocd-extension-installer:v0.0.1
           resources:
             limits:
+              cpu: 50m
               memory: 128Mi
             requests:
               cpu: 50m
@@ -32,6 +33,7 @@ spec:
         - name: argocd-server
           resources:
             limits:
+              cpu: 50m
               memory: 128Mi
             requests:
               cpu: 50m
