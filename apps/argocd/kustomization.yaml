@@ -9,7 +9,7 @@ resources:
 - base/apps/example.yaml
 - base/core/argocd.yaml
 - github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
-- github.com/argoproj/argo-cd/manifests/core-install?ref=v2.14.8
+- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.8
 
 namespace: argocd
 images:
@@ -40,22 +40,6 @@ patches:
   target:
     kind: Deployment
     name: argocd-server
-- patch: |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: argocd-notifications-controller
-    spec:
-      template:
-        spec:
-          containers:
-            - name: argocd-notifications-controller
-              resources:
-                limits:
-                  memory: 128Mi
-                requests:
-                  cpu: 50m
-                  memory: 128Mi
 - patch: |
     apiVersion: apps/v1
     kind: StatefulSet
