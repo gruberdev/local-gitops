@@ -33,13 +33,6 @@ patches:
   target:
     kind: Deployment
     name: argocd-server
-- patch: |-
-    - op: add
-      path: "/spec/template/spec/containers/0/args/-"
-      value: "--insecure"
-  target:
-    kind: Deployment
-    name: argocd-server
 - patch: |
     apiVersion: apps/v1
     kind: StatefulSet
@@ -52,10 +45,10 @@ patches:
             - name: argocd-application-controller
               resources:
                 limits:
-                  memory: 128Mi
+                  memory: 512Mi
                 requests:
                   cpu: 50m
-                  memory: 128Mi
+                  memory: 256Mi
 - patch: |
     apiVersion: apps/v1
     kind: Deployment
@@ -71,7 +64,7 @@ patches:
             - name: redis
               resources:
                 limits:
-                  memory: 128Mi
+                  memory: 256Mi
                 requests:
                   cpu: 50m
                   memory: 128Mi
@@ -98,7 +91,7 @@ patches:
             - name: argocd-repo-server
               resources:
                 limits:
-                  memory: 256Mi
+                  memory: 512Mi
                 requests:
                   cpu: 50m
                   memory: 256Mi

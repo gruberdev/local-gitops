@@ -11,6 +11,7 @@ data:
   ui.bannercontent: "ArgoCD instance created using local-gitops repository"
   ui.bannerurl: "https://github.com/gruberdev/local-gitops"
   ui.bannerpermanent: "false"
+  server.insecure: "true"
   configManagementPlugins: |
     - name: kustomized-helm
       init:

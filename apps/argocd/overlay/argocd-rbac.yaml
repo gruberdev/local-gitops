@@ -8,9 +8,6 @@ metadata:
 data:
   policy.default: role:admin
   policy.csv: |
-    p, role:image-updater, applications, get, */*, allow
-    p, role:image-updater, applications, update, */*, allow
-    g, image-updater, role:image-updater
     p, role:admin, exec, create, */*, allow
     p, role:admin, extensions, invoke, metrics, allow
     p, role:readonly, extensions, invoke, metrics, allow
