@@ -2,19 +2,22 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- base/projects
+- base/projects/apps.yaml
+- base/projects/cluster.yaml
+- base/projects/core.yaml
+- base/projects/monitoring.yaml
 - base/utilities/reflector.yaml
 - base/core/nginx.yaml
 - base/core/ingress.yaml
 - base/apps/example.yaml
 - base/core/argocd.yaml
 - github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
-- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.9
+- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.10
 
 namespace: argocd
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.14.9
+  newTag: v2.14.10
 patches:
 - patch: |-
     - op: replace
