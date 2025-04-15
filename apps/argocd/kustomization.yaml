@@ -9,7 +9,7 @@ resources:
 - base/apps/example.yaml
 - base/core/argocd.yaml
 - github.com/argoproj-labs/argocd-extension-metrics/manifests?ref=v1.0.3
-- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.9
+- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.10
 
 namespace: argocd
 images:
