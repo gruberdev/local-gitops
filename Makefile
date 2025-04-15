@@ -1,7 +1,7 @@
-.PHONY: all install-taskfile run clean
+.PHONY: all install-taskfile clean
 
 # Default target
-all: install-taskfile run
+all: install-taskfile
 
 # Detect OS
 UNAME_S := $(shell uname -s)
@@ -54,16 +54,6 @@ install-taskfile:
 		$(SUDO) sh install_task.sh -d -b $(INSTALL_DIR); \
 		rm install_task.sh; \
 		echo "Task installed successfully."; \
-	fi
-
-# Run Taskfile
-run:
-	@if [ -f Taskfile.yml ] || [ -f Taskfile.yaml ]; then \
-		echo "Running Taskfile..."; \
-		task; \
-	else \
-		echo "No Taskfile.yml or Taskfile.yaml found in the current directory."; \
-		exit 1; \
 	fi
 
 # Clean up
