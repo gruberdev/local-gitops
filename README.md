@@ -126,7 +126,7 @@ task tools
 
 
 <!--- Internal Git URIs -->
-[tasks-internal]: https://github.com/gruberdev/local-gitops/tree/main/tasks
+[tasks-internal]: https://github.com/gruberdev/local-gitops/tree/main/.tasks
 [k3d-benchs]: https://minikube.sigs.k8s.io/docs/benchmarks/imagebuild/minikubevsothers/
 
 <!--- Local URIs --->
