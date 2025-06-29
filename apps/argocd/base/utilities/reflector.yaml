@@ -7,7 +7,7 @@ spec:
   source:
     repoURL: https://github.com/emberstack/kubernetes-reflector.git
     path: src/helm/reflector
-    targetRevision: v9.1.14
+    targetRevision: v9.1.15
     helm:
       releaseName: reflector
       values: |
