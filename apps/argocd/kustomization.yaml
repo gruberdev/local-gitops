@@ -11,7 +11,7 @@ resources:
 - base/core/ingress.yaml
 - base/apps/example.yaml
 - base/core/argocd.yaml
-- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.19
+- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.14.20
 
 namespace: argocd
 images:
