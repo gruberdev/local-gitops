@@ -50,7 +50,7 @@ jobs:
         (wget -qO- https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz | sudo tar xvz -C /usr/bin) && sudo chmod +x /usr/bin/kubeconform
     - name: Validate new Services
       id: validate-service
-      uses: mathiasvr/command-output@v1
+      uses: mathiasvr/command-output@v2.0.0
       if: steps.changed-services.outputs.any_changed == 'true'
       with:
         run: |
@@ -58,7 +58,7 @@ jobs:
 
     - name: Validate new Workloads
       id: validate-workloads
-      uses: mathiasvr/command-output@v1
+      uses: mathiasvr/command-output@v2.0.0
       if: steps.changed-workloads.outputs.any_changed == 'true'
       with:
         run: |
@@ -67,7 +67,7 @@ jobs:
 
     - name: Validate new configMaps or Secrets
       id: validate-configs-cm
-      uses: mathiasvr/command-output@v1
+      uses: mathiasvr/command-output@v2.0.0
       if: steps.changed-configs.outputs.any_changed == 'true'
       with:
         run: |
@@ -76,7 +76,7 @@ jobs:
 
     - name: Validate new Permissions and RBAC resources
       id: validate-configs-rbac
-      uses: mathiasvr/command-output@v1
+      uses: mathiasvr/command-output@v2.0.0
       if: steps.changed-rbac.outputs.any_changed == 'true'
       with:
         run: |
@@ -87,7 +87,7 @@ jobs:
 
     - name: Validate new Storage resources
       id: validate-configs
-      uses: mathiasvr/command-output@v1
+      uses: mathiasvr/command-output@v2.0.0
       if: steps.changed-storage.outputs.any_changed == 'true'
       with:
         run: |
